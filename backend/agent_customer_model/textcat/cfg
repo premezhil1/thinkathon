@@ -1,0 +1,8 @@
+{
+  "labels":[
+    "AGENT",
+    "CUSTOMER"
+  ],
+  "threshold":0.0,
+  "positive_label":null
+}

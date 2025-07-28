@@ -1,0 +1,38 @@
+streamlit
+pandas
+numpy<2
+scikit-learn
+plotly
+matplotlib
+wordcloud
+nltk
+textblob
+vaderSentiment
+requests
+python-dateutil
+# SQLite is built-in with Python - no additional installation needed
+
+# NLP and ML dependencies
+transformers>=4.30.0
+torch>=2.0.0
+datasets>=2.12.0
+accelerate>=0.20.0
+
+# Audio processing dependencies (Python 3.13 compatible)
+openai-whisper>=20231117
+librosa>=0.10.1
+pydub>=0.25.1
+SpeechRecognition>=3.10.0
+ffmpeg-python>=0.2.0
+
+# PyTorch for audio processing (CPU version for compatibility)
+torchaudio>=2.0.0
+
+# FastAPI for backend API
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+python-multipart>=0.0.6
+aiofiles>=23.2.1
+
+# Optional: Speaker diarization (may require additional setup)
+# pyannote.audio>=3.1.0  # Commented out due to dependency issues

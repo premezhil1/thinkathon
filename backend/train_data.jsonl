@@ -1,0 +1,356 @@
+{"text": "The refund will reflect in 3-5 business days.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "How do I return this product?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "We appreciate your patience.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "My promo code isn\u2019t working.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "I want to speak to a supervisor.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Thanks for verifying your identity.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "You should receive a confirmation email shortly.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Can I pay with a different card?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Yes, that color is in stock. Would you like to update your order?", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "You can return the item within 30 days.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Do you offer discounts for bulk orders?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Yes, that color is in stock. Would you like to update your order?", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Can I change the delivery address?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "You should receive a confirmation email shortly.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I received the wrong item in my order.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "When will my package be delivered?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Thanks for verifying your identity.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I'll resend the invoice to your email.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Yes, that color is in stock. Would you like to update your order?", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "You should receive a confirmation email shortly.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I'll resend the invoice to your email.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I got an email about a failed transaction.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "My promo code isn\u2019t working.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "When will my package be delivered?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Can you please provide your order number?", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I got an email about a failed transaction.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "I received the wrong item in my order.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Your order is scheduled for delivery tomorrow.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "The refund will reflect in 3-5 business days.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Can you please provide your order number?", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Let me update your delivery address.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Your order is scheduled for delivery tomorrow.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I'll resend the invoice to your email.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "This item is missing from my order.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "I'll resend the invoice to your email.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I\u2019ve processed a refund for your purchase.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Can I pay with a different card?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "My tracking number isn't working.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "We appreciate your patience.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I need help with my account login.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Do you offer discounts for bulk orders?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "You can return the item within 30 days.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Can I change the delivery address?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Please clear your browser cache and try again.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Why is my order delayed?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "The product I received is damaged.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "My promo code isn\u2019t working.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Can you please provide your order number?", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I received the wrong item in my order.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "I'm still waiting for my refund.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "The website is under maintenance right now.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Let me update your delivery address.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Let me update your delivery address.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I\u2019ve processed a refund for your purchase.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "The product I received is damaged.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Can I cancel my order?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "I have applied a 10% discount to your cart.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Yes, that color is in stock. Would you like to update your order?", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I'll resend the invoice to your email.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "The refund will reflect in 3-5 business days.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Let me check the tracking details for you.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I received the wrong item in my order.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "I want to speak to a supervisor.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Thank you for contacting support.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I'm escalating this issue to our technical team.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Your order is scheduled for delivery tomorrow.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Why was I charged twice?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Do you have this in another color?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Can I change the delivery address?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "We\u2019ve reset your account password.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "The product I received is damaged.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "My tracking number isn't working.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Thank you for contacting support.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "My tracking number isn't working.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "I need help with my account login.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "You should receive a confirmation email shortly.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Your order is scheduled for delivery tomorrow.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Can I change the delivery address?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "We appreciate your patience.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Let me check the tracking details for you.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "You can return the item within 30 days.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I'm escalating this issue to our technical team.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "We appreciate your patience.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I'm sorry to hear that. Let me look into this for you.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I got an email about a failed transaction.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Can you please provide your order number?", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "We\u2019ve reset your account password.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Thank you for contacting support.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Can I pay with a different card?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "You should receive a confirmation email shortly.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "How do I return this product?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "I need help with my account login.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "The website isn\u2019t loading properly.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Can I pay with a different card?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Do you offer discounts for bulk orders?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "I'll connect you to my supervisor.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Please clear your browser cache and try again.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I'm escalating this issue to our technical team.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I have applied a 10% discount to your cart.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "This item is missing from my order.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Thanks for verifying your identity.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Why was I charged twice?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Can I pay with a different card?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Why was I charged twice?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "My tracking number isn't working.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Your order is scheduled for delivery tomorrow.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Can I pay with a different card?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "I have applied a 10% discount to your cart.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Do you have this in another color?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Thanks for verifying your identity.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Let me check the tracking details for you.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "The refund will reflect in 3-5 business days.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I got an email about a failed transaction.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Do you offer discounts for bulk orders?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Thank you for contacting support.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "The product I received is damaged.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "The website isn\u2019t loading properly.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "I need help with my account login.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Yes, that color is in stock. Would you like to update your order?", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I want to speak to a supervisor.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Why is my order delayed?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Why is my order delayed?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "You can return the item within 30 days.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "You should receive a confirmation email shortly.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Please clear your browser cache and try again.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "You can return the item within 30 days.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Can I change the delivery address?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "I received the wrong item in my order.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Yes, that color is in stock. Would you like to update your order?", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Why is my order delayed?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "The website isn\u2019t loading properly.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Why was I charged twice?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Can I pay with a different card?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "We appreciate your patience.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I want to speak to a supervisor.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "I want to speak to a supervisor.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "I need an invoice for my last purchase.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Thank you for contacting support.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I'll connect you to my supervisor.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Why is my order delayed?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Can you please provide your order number?", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Your order is scheduled for delivery tomorrow.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Can I cancel my order?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Can I change the delivery address?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "You should receive a confirmation email shortly.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "We appreciate your patience.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I'll resend the invoice to your email.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Your order is scheduled for delivery tomorrow.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Thank you for contacting support.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I need an invoice for my last purchase.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "The product I received is damaged.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "I need an invoice for my last purchase.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "When will my package be delivered?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "My tracking number isn't working.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "I'll connect you to my supervisor.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I'm sorry to hear that. Let me look into this for you.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "The product I received is damaged.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "I need an invoice for my last purchase.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "The product I received is damaged.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "You can return the item within 30 days.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "When will my package be delivered?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Can you please provide your order number?", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "We\u2019ve reset your account password.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I'm sorry to hear that. Let me look into this for you.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "We\u2019ve reset your account password.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Do you have this in another color?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "I received the wrong item in my order.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "I\u2019ve processed a refund for your purchase.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Why is my order delayed?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Can I pay with a different card?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Can I cancel my order?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Thank you for contacting support.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Do you have this in another color?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "The refund will reflect in 3-5 business days.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Thank you for contacting support.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "My tracking number isn't working.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Do you offer discounts for bulk orders?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "How do I return this product?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Thank you for contacting support.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I got an email about a failed transaction.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Please clear your browser cache and try again.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "When will my package be delivered?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "My tracking number isn't working.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "How do I return this product?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Your order is scheduled for delivery tomorrow.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "This item is missing from my order.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "My promo code isn\u2019t working.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Do you have this in another color?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "I'm escalating this issue to our technical team.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I need help with my account login.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "I need help with my account login.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Your order is scheduled for delivery tomorrow.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I'll connect you to my supervisor.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Can I pay with a different card?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "We\u2019ve reset your account password.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I'll resend the invoice to your email.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "You should receive a confirmation email shortly.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "When will my package be delivered?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Do you have this in another color?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Can you please provide your order number?", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "The tracking number doesn\u2019t work.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "We are working on a resolution for you.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "What\u2019s the return policy?", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "This call may be recorded for quality.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "I placed an order last week.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "We can offer store credit if you prefer.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "I need proof of purchase.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "Is there a way to speed up delivery?", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "No worries, I\u2019ll help reset it.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "The issue has been fixed. Please try again.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "Thanks for calling support, how may I assist you?", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "The coupon code has expired.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "Feel free to contact us again anytime.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "Sure, I can help you with that.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "You can expect an email shortly.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "Can I pay with a different card?", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "You can track your package using this link.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "Can I speak to a manager?", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "I\u2019ll file a claim with the courier service.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "Shipping fees depend on the item\u2019s warehouse location.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "I got the wrong invoice.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "We\u2019re open from 9 AM to 6 PM, Monday to Friday.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "I forgot my password.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "This offer is valid till the end of the month.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "I was charged twice for the same item.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "I need the receipt emailed.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "It should arrive in 3\u20135 business days.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "Glad to assist you today!", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "Why was I charged extra shipping?", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "A replacement will be shipped shortly.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "Where is my package?", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "What\u2019s your support email?", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "I got someone else's item.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "Let me look that up for you.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "We\u2019ve sent a confirmation to your email.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "This is unacceptable service.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "The item I got is defective.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "My refund hasn\u2019t shown up yet.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "Your refund is being processed.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "I didn\u2019t get any confirmation email.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "The system is currently under maintenance.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "Can I change the delivery address?", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "The payment failed due to insufficient funds.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "We\u2019ve received your return request.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "Please contact your bank for more information.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "I\u2019m really frustrated with this.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "Why did I get charged tax?", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "This is taking too long.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "The color I received is wrong.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "How do I return this?", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "Can I get this in a different size?", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "Let me walk you through the process.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "That item is currently out of stock.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "My account got locked.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "I can\u2019t access my account.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "Thanks for verifying your details.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "You can change your address in account settings.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "The color mismatch has been noted.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "The website keeps crashing.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "Please try resetting your password using the link sent.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "Yes, I\u2019ve verified your account.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "How long does delivery take?", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "We\u2019ve extended the return window.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "Do you have this in stock?", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "I\u2019ve been on hold for 20 minutes.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "I\u2019ve escalated your issue to our billing team.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "We\u2019re looking into this issue on priority.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "Can I get a call back?", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "It\u2019s an urgent request.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "We apologize for the inconvenience caused.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "I need help with my return.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "Why was my order cancelled?", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "Let me cancel that order for you.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "I can apply that coupon now.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "I want to cancel my order.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "We will issue a store credit within 48 hours.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "You\u2019ll be notified once it ships.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "Thank you for your help.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "I see the charge. Let me process the refund.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "Let me check with our dispatch team.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "I made a mistake in my address.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "Yes, this is customer support.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "I\u2019m not happy with this order.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "I was promised a discount.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "Hello, is this customer care?", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "I haven't received my order yet.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "Your order has been delayed due to weather conditions.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "The package arrived damaged.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "Why can\u2019t I use the discount code?", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "Your new password is now active.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "I entered the wrong payment info.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "Please send us a photo of the damage.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "This wasn\u2019t supposed to be COD.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "We\u2019ll send you a return label right away.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "We\u2019ve updated your delivery address.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "I need this by tomorrow.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "This is not what I ordered.", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "Could you please provide your order number?", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "I can offer you a 10% discount coupon.", "cats": {"Customer": 0.0, "Agent": 1.0}}
+{"text": "Can I get a replacement?", "cats": {"Customer": 1.0, "Agent": 0.0}}
+{"text": "Hello, thank you for calling support. How can I help you today?", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Hi, I need help with my recent order.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Sure, could you please provide your order number?", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Yes, it's 1234567890.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Thank you. Let me pull up your details.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I received the wrong item in my package.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "I apologize for the inconvenience. Can you describe the item you received?", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Instead of a black jacket, I received blue jeans.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Got it. We'll send a replacement right away.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Do I need to return the incorrect item?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "No need to return it. You can keep it or donate it.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Wow, that’s generous. Thanks!", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "You're welcome. Is there anything else I can help you with?", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "No, that would be all. Thanks again.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Have a great day!", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Hi, my package hasn’t arrived yet.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "I’m sorry to hear that. Can you share your tracking number?", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "It’s 1Z999AA10123456784.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Thanks. Let me check the status for you.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "It says the package was delivered yesterday.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I didn’t receive anything.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Can you check with neighbors or building management?", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Yes, I’ll ask them and call back if needed.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Sounds good. We’ll help you if it’s still missing.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Hi, I want to cancel my order.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Let me assist you with that. Can I have the order number?", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Order number is 789654123.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "It’s already shipped. We can process a return once delivered.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Okay, I’ll wait and return it then.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "You’ll get a return label via email. Use that to send it back.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Thanks for your help.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "You're welcome!", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "The product I received is defective.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "I’m really sorry about that. Can you share a photo of the issue?", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Yes, I’ll email it right away.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Perfect. We’ll review and issue a refund or replacement.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "I didn’t receive an order confirmation email.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Can you check your spam folder? Sometimes emails land there.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Yes, it was in spam. Thanks!", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Happy to help!", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Can I change the shipping address?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Sure. Please provide the new address.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "123 Green Street, Apt 4B, New York.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Updated. Your package will be sent to the new address.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Can I speak with a supervisor?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Yes, please hold while I transfer the call.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Thanks for waiting. This is the supervisor speaking.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Hi, I was double-charged for an order.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "I apologize for that. Let me check your transaction history.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Yes, it shows two charges.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Can you refund one of them?", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Absolutely. The refund will be processed within 3–5 days.", "cats": {"Agent": 1.0, "Customer": 0.0}}
+{"text": "Great. Appreciate the quick support.", "cats": {"Agent": 0.0, "Customer": 1.0}}
+{"text": "Always here to help!", "cats": {"Agent": 1.0, "Customer": 0.0}} 
+
+ 
