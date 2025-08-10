@@ -70,6 +70,8 @@
     "stage_transcription": "Transcription",
     "stage_transcription_description": "Converting speech to text",
     "stage_diarization": "Speaker Identification",
+    "stage_saving": "Saving Analysis",
+    "stage_saving_description": "Saving Audio & User Analysis",
     "stage_diarization_description": "Identifying speakers",
     "stage_analysis": "Analysis",
     "stage_analysis_description": "Analyzing conversation content",

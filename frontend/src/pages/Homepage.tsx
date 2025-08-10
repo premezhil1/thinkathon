@@ -139,6 +139,11 @@ export const Homepage: React.FC = () => {
   const [dashboardStats, setDashboardStats] = useState<DashboardStats | null>(null);
   const { t } = useTranslation(); 
   
+  // Navigate to user status page
+  const handleUserClick = (userId: string) => {
+    navigate(`/user-dashboard/${userId}`);
+  };
+
   // Get current date in YYYY-MM-DD format
   const getCurrentDate = () => {
     const today = new Date();
@@ -672,8 +677,7 @@ export const Homepage: React.FC = () => {
                     <TableRow>
                       <TableCell>Date</TableCell>
                       <TableCell>Industry</TableCell>
-                      <TableCell>Sentiment</TableCell>
-                      <TableCell align="right">Quality Score</TableCell>
+                      <TableCell>Sentiment</TableCell>                       
                       <TableCell align="right">Actions</TableCell>
                     </TableRow>
                   </TableHead>
@@ -702,18 +706,7 @@ export const Homepage: React.FC = () => {
                             className={`recent-activity-sentiment-chip sentiment-chip-${activity.sentiment.toLowerCase()}`}
                           />
                         </TableCell>
-                        <TableCell align="right">
-                          <div className="recent-activity-quality-container">
-                            <span className="text-body2 recent-activity-quality-score">
-                              {activity.quality_score}
-                            </span>
-                            <LinearProgress 
-                              variant="determinate" 
-                              value={activity.quality_score * 100}
-                              className="recent-activity-quality-progress"
-                            />
-                          </div>
-                        </TableCell>
+                     
                         <TableCell align="right">
                           <IconButton 
                             size="small"
@@ -751,7 +744,7 @@ export const Homepage: React.FC = () => {
                         </h3>
                         <div className="flex flex-col gap-sm">
                           {stats.top_user_performance.top_positive_sentiment.map((user, index) => (
-                            <div key={user.user_id} className="app-card" style={{backgroundColor: '#f0f8f0', border: '1px solid #4CAF50'}}>
+                            <div key={user.user_id} className="app-card" style={{backgroundColor: '#f0f8f0', border: '1px solid #4CAF50'}} onClick={() => handleUserClick(user.user_id)}>
                               <div className="p-sm">
                                 <div className="flex justify-between items-center mb-xs">
                                   <div className="flex items-center gap-xs">
@@ -779,7 +772,11 @@ export const Homepage: React.FC = () => {
                                   <span style={{fontSize: 'var(--font-size-xs)', color: '#666'}}>
                                     @{user.username} • {user.department}
                                   </span>
-                                  <span className="chip" style={{backgroundColor: '#4CAF50', color: 'white', fontSize: 'var(--font-size-xs)'}}>
+                                  <span className="chip" style={{
+                                    backgroundColor: '#4CAF50',
+                                    color: 'white',
+                                    fontSize: 'var(--font-size-xs)'
+                                  }}>
                                     {user.positive_percentage}% Positive
                                   </span>
                                 </div>
@@ -788,10 +785,18 @@ export const Homepage: React.FC = () => {
                                     {user.total_calls} calls
                                   </span>
                                   
-                                  <span className="chip" style={{backgroundColor: '#4CAF50', color: 'white', fontSize: 'var(--font-size-xs)'}}>
+                                  <span className="chip" style={{
+                                    backgroundColor: '#4CAF50',
+                                    color: 'white',
+                                    fontSize: 'var(--font-size-xs)'
+                                  }}>
                                     +{user.positive_count}
                                   </span>
-                                  <span className="chip" style={{backgroundColor: '#f44336', color: 'white', fontSize: 'var(--font-size-xs)'}}>
+                                  <span className="chip" style={{
+                                    backgroundColor: '#f44336',
+                                    color: 'white',
+                                    fontSize: 'var(--font-size-xs)'
+                                  }}>
                                     -{user.negative_count}
                                   </span>
                                 </div>
@@ -810,7 +815,7 @@ export const Homepage: React.FC = () => {
                         </h3>
                         <div className="flex flex-col gap-sm">
                           {stats.top_user_performance.top_low_negative_sentiment.map((user, index) => (
-                            <div key={user.user_id} className="app-card" style={{backgroundColor: '#f8f0f0', border: '1px solid #2196F3'}}>
+                            <div key={user.user_id} className="app-card" style={{backgroundColor: '#f8f0f0', border: '1px solid #2196F3'}} onClick={() => handleUserClick(user.user_id)}>
                               <div className="p-sm">
                                 <div className="flex justify-between items-center mb-xs">
                                   <div className="flex items-center gap-xs">
@@ -838,7 +843,11 @@ export const Homepage: React.FC = () => {
                                   <span style={{fontSize: 'var(--font-size-xs)', color: '#666'}}>
                                     @{user.username} • {user.department}
                                   </span>
-                                  <span className="chip" style={{backgroundColor: '#2196F3', color: 'white', fontSize: 'var(--font-size-xs)'}}>
+                                  <span className="chip" style={{
+                                    backgroundColor: '#2196F3',
+                                    color: 'white',
+                                    fontSize: 'var(--font-size-xs)'
+                                  }}>
                                     {user.negative_percentage}% Negative
                                   </span>
                                 </div>
@@ -847,10 +856,18 @@ export const Homepage: React.FC = () => {
                                     {user.total_calls} calls
                                   </span>
                                    
-                                  <span className="chip" style={{backgroundColor: '#4CAF50', color: 'white', fontSize: 'var(--font-size-xs)'}}>
+                                  <span className="chip" style={{
+                                    backgroundColor: '#4CAF50',
+                                    color: 'white',
+                                    fontSize: 'var(--font-size-xs)'
+                                  }}>
                                     +{user.positive_count}
                                   </span>
-                                  <span className="chip" style={{backgroundColor: '#f44336', color: 'white', fontSize: 'var(--font-size-xs)'}}>
+                                  <span className="chip" style={{
+                                    backgroundColor: '#f44336',
+                                    color: 'white',
+                                    fontSize: 'var(--font-size-xs)'
+                                  }}>
                                     -{user.negative_count}
                                   </span>
                                 </div>
@@ -869,7 +886,7 @@ export const Homepage: React.FC = () => {
                         </h3>
                         <div className="flex flex-col gap-sm">
                           {stats.top_user_performance.top_overall_performance.map((user, index) => (
-                            <div key={user.user_id} className="app-card" style={{backgroundColor: '#fff8e1', border: '1px solid #FF9800'}}>
+                            <div key={user.user_id} className="app-card" style={{backgroundColor: '#fff8e1', border: '1px solid #FF9800'}} onClick={() => handleUserClick(user.user_id)}>
                               <div className="p-sm">
                                 <div className="flex justify-between items-center mb-xs">
                                   <div className="flex items-center gap-xs">
@@ -897,19 +914,25 @@ export const Homepage: React.FC = () => {
                                   <span style={{fontSize: 'var(--font-size-xs)', color: '#666'}}>
                                     @{user.username} • {user.department}
                                   </span>
-                                  <span className="chip" style={{backgroundColor: '#FF9800', color: 'white', fontSize: 'var(--font-size-xs)'}}>
-                                    Score: {user.performance_score}
-                                  </span>
+                                   
                                 </div>
                                 <div className="flex gap-xs">
                                   <span className="chip chip-secondary" style={{fontSize: 'var(--font-size-xs)'}}>
                                     {user.total_calls} calls
                                   </span>
                                   
-                                  <span className="chip" style={{backgroundColor: '#4CAF50', color: 'white', fontSize: 'var(--font-size-xs)'}}>
+                                  <span className="chip" style={{
+                                    backgroundColor: '#4CAF50',
+                                    color: 'white',
+                                    fontSize: 'var(--font-size-xs)'
+                                  }}>
                                     {user.positive_percentage}% +
                                   </span>
-                                  <span className="chip" style={{backgroundColor: '#FFC107', color: 'black', fontSize: 'var(--font-size-xs)'}}>
+                                  <span className="chip" style={{
+                                    backgroundColor: '#FFC107',
+                                    color: 'black',
+                                    fontSize: 'var(--font-size-xs)'
+                                  }}>
                                     {user.neutral_count} neutral
                                   </span>
                                 </div>
@@ -979,13 +1002,25 @@ export const Homepage: React.FC = () => {
                                   </span>
                                 </div>
                                 <div className="flex gap-xs">
-                                  <span className="chip" style={{backgroundColor: '#4CAF50', color: 'white', fontSize: 'var(--font-size-xs)'}}>
+                                  <span className="chip" style={{
+                                    backgroundColor: '#4CAF50',
+                                    color: 'white',
+                                    fontSize: 'var(--font-size-xs)'
+                                  }}>
                                     {topic.positive}% Positive
                                   </span>
-                                  <span className="chip" style={{backgroundColor: '#FFC107', color: 'black', fontSize: 'var(--font-size-xs)'}}>
+                                  <span className="chip" style={{
+                                    backgroundColor: '#FFC107',
+                                    color: 'black',
+                                    fontSize: 'var(--font-size-xs)'
+                                  }}>
                                     {topic.neutral}% Neutral
                                   </span>
-                                  <span className="chip" style={{backgroundColor: '#F44336', color: 'white', fontSize: 'var(--font-size-xs)'}}>
+                                  <span className="chip" style={{
+                                    backgroundColor: '#F44336',
+                                    color: 'white',
+                                    fontSize: 'var(--font-size-xs)'
+                                  }}>
                                     {topic.negative}% Negative
                                   </span>
                                 </div>

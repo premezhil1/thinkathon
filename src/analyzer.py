@@ -15,14 +15,18 @@ from topic_extractor import TopicExtractor
 import nltk
 import re
 nltk.download("punkt", quiet=True)
+from transformers import AutoTokenizer
 from nltk.tokenize import sent_tokenize
 
 
 class CallAnalyzer:
-    summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+  
+     
     def __init__(self):
         """Initialize the call analyzer with all components."""
         print("Initializing Call Analyzer...")
+        self.model_name = "philschmid/bart-large-cnn-samsum"
+        self.summarizer = pipeline("summarization", model=self.model_name)
         self.intent_detector = IntentDetector()
         self.sentiment_analyzer = SentimentAnalyzer()
         self.topic_extractor = TopicExtractor()
@@ -72,11 +76,7 @@ class CallAnalyzer:
             # Perform all analyses
             intent_results = self.intent_detector.analyze_conversation(dialogue, industry)
             sentiment_results = self.sentiment_analyzer.analyze_conversation(dialogue)
-            topic_results = self.topic_extractor.extract_conversation_topics(dialogue, industry)
-            
-            # Calculate overall quality score
-            quality_score = self._calculate_overall_quality(intent_results, sentiment_results, topic_results)
-            
+            topic_results = self.topic_extractor.extract_conversation_topics(dialogue, industry)             
             
             # Generate summary  
             formatted_lines = [f"{entry['speaker']}: {entry['text']}" for entry in conversation['dialogue']]
@@ -95,8 +95,7 @@ class CallAnalyzer:
                 'overall_sentiment': sentiment_results.get('overall_sentiment', []) if sentiment_results else [],
                 'participant_sentiments': sentiment_results.get('participant_sentiments', []) if sentiment_results else [],
                 'topic_analysis': topic_results,
-                'topic_scores': topic_results.get('topic_scores', []) if topic_results else [],
-                'quality_metrics': quality_score,
+                'topic_scores': topic_results.get('topic_scores', []) if topic_results else [],                 
                 'conversation_summary': summary
             }
             
@@ -163,51 +162,7 @@ class CallAnalyzer:
             'analysis_timestamp': datetime.now().isoformat()
         }
     
-    def _calculate_overall_quality(self, intent_results: Dict, sentiment_results: Dict, topic_results: Dict) -> Dict:
-        """Calculate overall conversation quality metrics."""
-        # Intent clarity score
-        intent_confidence = intent_results.get('intent_confidence', {})
-        intent_clarity = max(intent_confidence.values()) if intent_confidence else 0
-        
-        # Sentiment quality score
-        sentiment_quality = sentiment_results.get('quality_metrics', {}).get('quality_score', 0)
-        
-        # Topic relevance score
-        dominant_topics = topic_results.get('dominant_topics', [])
-        topic_relevance = sum(score for _, score in dominant_topics[:3]) * 100 if dominant_topics else 0
-        
-        # Agent response quality
-        agent_response_quality = intent_results.get('agent_response_pattern', {}).get('quality_score', 0) * 100
-        
-        # Overall quality score (weighted average)
-        overall_quality = (
-            intent_clarity * 0.25 +
-            sentiment_quality * 0.35 +
-            topic_relevance * 0.20 +
-            agent_response_quality * 0.20
-        )
-        
-        # Quality classification
-        if overall_quality >= 75:
-            quality_level = 'excellent'
-        elif overall_quality >= 60:
-            quality_level = 'good'
-        elif overall_quality >= 40:
-            quality_level = 'fair'
-        else:
-            quality_level = 'poor'
-        
-        return {
-            'overall_score': round(overall_quality, 2),
-            'quality_level': quality_level,
-            'component_scores': {
-                'intent_clarity': round(intent_clarity, 2),
-                'sentiment_quality': round(sentiment_quality, 2),
-                'topic_relevance': round(topic_relevance, 2),
-                'agent_response_quality': round(agent_response_quality, 2)
-            }
-        }
-    
+ 
     def _update_aggregate_metrics(self, result: Dict, aggregate_metrics: Dict):
         """Update aggregate metrics with individual conversation result."""
         industry = result.get('industry', 'unknown')
@@ -256,7 +211,6 @@ class CallAnalyzer:
         if resolution in ['resolved', 'partially_resolved']:
             aggregate_metrics['quality_metrics']['resolution_rate'] += 1
 
-
     
 
     def clean_conversation(self, text):
@@ -290,64 +244,104 @@ class CallAnalyzer:
         
         return chunks
 
-    def _generate_summary(self, conversation):
-        """Generate summary with improved parameters for better narrative flow"""
 
-        print(f"conversaion Summary prem {conversation}")
-        
+    def chunk_text_by_tokens(self, text, max_tokens=800):
+        tokenizer = AutoTokenizer.from_pretrained(self.model_name)
+        sentences = sent_tokenize(text)
+
+        chunks = []
+        current_chunk = []
+        current_tokens = 0
+
+        for sentence in sentences:
+            sentence_tokens = tokenizer.encode(sentence, add_special_tokens=False)
+            sentence_length = len(sentence_tokens)
+
+            if current_tokens + sentence_length > max_tokens:
+                if current_chunk:
+                    chunks.append(" ".join(current_chunk))
+                current_chunk = [sentence]
+                current_tokens = sentence_length
+            else:
+                current_chunk.append(sentence)
+                current_tokens += sentence_length
+
+        if current_chunk:
+            chunks.append(" ".join(current_chunk))
+
+        return chunks, tokenizer
+
+    def _generate_summary(self, conversation):
+        """Generate summary with improved parameters and adaptive length control"""
+
         # Clean the conversation
         cleaned_conversation = self.clean_conversation(conversation)
-        
-        # Step 1: Chunk the conversation
-        chunks = self.chunk_text(cleaned_conversation, max_length=800)
-        
+
+        # --- Token-based chunking method ---
+        # Step 1: Chunk the conversation using token-aware splitting
+        chunks, tokenizer = self.chunk_text_by_tokens(cleaned_conversation, max_tokens=800)
+
         if not chunks:
             return "Unable to generate summary - no content found."
-        
-        # Step 2: Summarize each chunk with parameters optimized for narrative style
+
         summaries = []
+
+        # Step 2: Summarize each chunk with adaptive parameters
         for chunk in chunks:
             try:
+                chunk_tokens = len(tokenizer.encode(chunk))
+                chunk_max_len = min(100, max(50, chunk_tokens // 2))  # Cap at 100 tokens
+                chunk_min_len = max(25, chunk_max_len // 3)
+
                 summary = self.summarizer(
-                    chunk, 
-                    max_length=80,  # Slightly longer chunks
-                    min_length=30,
+                    chunk,
+                    max_length=chunk_max_len,
+                    min_length=chunk_min_len,
                     do_sample=False,
-                    num_beams=4,    # Better beam search
+                    num_beams=4,
                     length_penalty=1.0,
                     early_stopping=True
                 )[0]['summary_text']
+
                 summaries.append(summary)
+
             except Exception as e:
-                print(f"Error summarizing chunk: {e}")
+                print(f"Error summarizing chunk: {e} | First 80 chars: {chunk[:80]}")
                 continue
-        
+
         if not summaries:
             return "Unable to generate summary."
-        
-        # Step 3: Combine and create final summary
+
+        # Step 3: Combine summaries
         if len(summaries) == 1:
             final_summary = summaries[0]
         else:
             combined_text = " ".join(summaries)
-            try:
-                final_summary = self.summarizer(
-                    combined_text, 
-                    max_length=120,  # Target length for final summary
-                    min_length=50,
-                    do_sample=False,
-                    num_beams=4,
-                    length_penalty=1.2,  # Encourage longer sentences
-                    early_stopping=True
-                )[0]['summary_text']
-            except Exception as e:
-                print(f"Error in final summarization: {e}")
+            combined_tokens = len(tokenizer.encode(combined_text))
+
+            if combined_tokens < 150:
                 final_summary = combined_text
-        
-        # Step 4: Post-process to improve narrative flow
-        final_summary = self.post_process_summary(final_summary)
-        
-        return final_summary
+            else:
+                try:
+                    final_max_len = min(400, combined_tokens // 2)
+                    final_min_len = max(50, final_max_len // 3)
+
+                    final_summary = self.summarizer(
+                        combined_text,
+                        max_length=final_max_len,
+                        min_length=final_min_len,
+                        do_sample=False,
+                        num_beams=4,
+                        length_penalty=1.2,
+                        early_stopping=True
+                    )[0]['summary_text']
+
+                except Exception as e:
+                    print(f"Error in final summarization: {e}")
+                    final_summary = combined_text
+
+        # Step 4: Post-process for better narrative flow
+        return self.post_process_summary(final_summary)
 
     def post_process_summary(self, summary):
         """Post-process summary to improve readability and narrative flow"""
@@ -369,175 +363,12 @@ class CallAnalyzer:
         
         return summary
     
-    def _finalize_aggregate_metrics(self, aggregate_metrics: Dict, total_conversations: int):
-        """Finalize aggregate metrics calculations."""
-        if total_conversations > 0:
-            # Average quality
-            aggregate_metrics['quality_metrics']['average_quality'] /= total_conversations
-            aggregate_metrics['quality_metrics']['average_quality'] = round(
-                aggregate_metrics['quality_metrics']['average_quality'], 2
-            )
-            
-            # Resolution rate percentage
-            aggregate_metrics['quality_metrics']['resolution_rate'] = round(
-                (aggregate_metrics['quality_metrics']['resolution_rate'] / total_conversations) * 100, 2
-            )
-            
-            # High quality percentage
-            aggregate_metrics['quality_metrics']['high_quality_percentage'] = round(
-                (aggregate_metrics['quality_metrics']['high_quality_count'] / total_conversations) * 100, 2
-            )
-    
-    def _generate_dataset_insights(self, individual_results: List[Dict], aggregate_metrics: Dict) -> Dict:
-        """Generate insights and trends from the dataset analysis."""
-        insights = {
-            'key_findings': [],
-            'industry_insights': {},
-            'performance_trends': {},
-            'improvement_areas': []
-        }
-        
-        # Key findings
-        total_convs = aggregate_metrics['total_conversations']
-        avg_quality = aggregate_metrics['quality_metrics']['average_quality']
-        resolution_rate = aggregate_metrics['quality_metrics']['resolution_rate']
-        
-        insights['key_findings'].append(f"Analyzed {total_convs} conversations with average quality score of {avg_quality}")
-        insights['key_findings'].append(f"Resolution rate: {resolution_rate}%")
-        
-        # Most common intent and sentiment
-        intent_dist = aggregate_metrics['intent_distribution']
-        sentiment_dist = aggregate_metrics['sentiment_distribution']
-        
-        if intent_dist:
-            most_common_intent = max(intent_dist.items(), key=lambda x: x[1])
-            insights['key_findings'].append(f"Most common intent: {most_common_intent[0]} ({most_common_intent[1]} conversations)")
-        
-        if sentiment_dist:
-            most_common_sentiment = max(sentiment_dist.items(), key=lambda x: x[1])
-            insights['key_findings'].append(f"Most common sentiment: {most_common_sentiment[0]} ({most_common_sentiment[1]} conversations)")
-        
-        # Industry-specific insights
-        for industry, count in aggregate_metrics['industries'].items():
-            industry_convs = [r for r in individual_results if r.get('industry') == industry]
-            if industry_convs:
-                avg_industry_quality = sum(r['quality_metrics']['overall_score'] for r in industry_convs) / len(industry_convs)
-                insights['industry_insights'][industry] = {
-                    'conversation_count': count,
-                    'average_quality': round(avg_industry_quality, 2),
-                    'percentage_of_total': round((count / total_convs) * 100, 1)
-                }
-        
-        # Improvement areas
-        if avg_quality < 60:
-            insights['improvement_areas'].append("Overall conversation quality needs improvement")
-        
-        if resolution_rate < 70:
-            insights['improvement_areas'].append("Resolution rate could be improved")
-        
-        negative_sentiment_count = sentiment_dist.get('negative', 0)
-        if negative_sentiment_count > total_convs * 0.3:
-            insights['improvement_areas'].append("High number of negative sentiment conversations")
-        
-        return insights
-    
-    def save_results(self, results: Dict, output_path: str):
-        """Save analysis results to JSON file."""
-        os.makedirs(os.path.dirname(output_path), exist_ok=True)
-        
-        with open(output_path, 'w', encoding='utf-8') as f:
-            json.dump(results, f, indent=2, ensure_ascii=False)
-        
-        print(f"Results saved to {output_path}")
-    
-    def export_to_csv(self, results: Dict, output_path: str):
-        """Export analysis results to CSV format."""
-        individual_analyses = results.get('individual_analyses', [])
-        
-        if not individual_analyses:
-            print("No individual analyses to export")
-            return
-        
-        # Prepare data for CSV
-        csv_data = []
-        for analysis in individual_analyses:
-            row = {
-                'conversation_id': analysis.get('conversation_id'),
-                'industry': analysis.get('industry'),
-                'primary_intent': analysis.get('intent_analysis', {}).get('intents', [''])[0].get('intent', '') if isinstance(analysis.get('intent_analysis', {}).get('intents', [''])[0], dict) else str(analysis.get('intent_analysis', {}).get('intents', [''])[0]),
-                'overall_sentiment': analysis.get('sentiment_analysis', {}).get('overall_sentiment', {}).get('label', 'neutral'),
-                'customer_sentiment': analysis.get('sentiment_analysis', {}).get('participant_sentiments', {}).get('customer', {}).get('overall', {}).get('label', 'neutral'),
-                'quality_score': analysis.get('quality_metrics', {}).get('overall_score'),
-                'quality_level': analysis.get('quality_metrics', {}).get('quality_level'),
-                'resolution_status': analysis.get('sentiment_analysis', {}).get('quality_metrics', {}).get('resolution_indicator', 'unknown'),
-                'main_topic': analysis.get('topic_analysis', {}).get('dominant_topics', [('', 0)])[0][0]
-            }
-            csv_data.append(row)
-        
-        # Create DataFrame and save
-        df = pd.DataFrame(csv_data)
-        df.to_csv(output_path, index=False)
-        print(f"CSV export saved to {output_path}")
-
+ 
+ 
+ 
+ 
 def main():
     """Main function to run the analyzer."""
-    # Initialize analyzer
-    analyzer = CallAnalyzer()
-    
-    # Load sample data
-    data_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'sample_conversations.json')
-    
-    try:
-        with open(data_path, 'r', encoding='utf-8') as f:
-            conversations = json.load(f)
-        
-        print(f"Loaded {len(conversations)} conversations from {data_path}")
-        
-        # Analyze dataset
-        results = analyzer.analyze_dataset(conversations)
-        
-        # Save results
-        output_dir = os.path.join(os.path.dirname(__file__), '..', 'outputs')
-        os.makedirs(output_dir, exist_ok=True)
-        
-        # Save JSON results
-        json_output = os.path.join(output_dir, 'analysis_results.json')
-        analyzer.save_results(results, json_output)
-        
-        # Save CSV summary
-        csv_output = os.path.join(output_dir, 'analysis_summary.csv')
-        analyzer.export_to_csv(results, csv_output)
-        
-        # Print summary
-        print("\n" + "="*50)
-        print("ANALYSIS COMPLETE")
-        print("="*50)
-        
-        dataset_summary = results['dataset_summary']
-        print(f"Total conversations analyzed: {dataset_summary['total_conversations']}")
-        print(f"Average quality score: {dataset_summary['quality_metrics']['average_quality']}")
-        print(f"Resolution rate: {dataset_summary['quality_metrics']['resolution_rate']}%")
-        
-        print("\nIndustry distribution:")
-        for industry, count in dataset_summary['industries'].items():
-            print(f"  {industry}: {count} conversations")
-        
-        print("\nIntent distribution:")
-        for intent, count in list(dataset_summary['intent_distribution'].items())[:5]:
-            print(f"  {intent.replace('_', ' ').title()}: {count} conversations")
-        
-        print("\nSentiment distribution:")
-        for sentiment, count in dataset_summary['sentiment_distribution'].items():
-            print(f"  {sentiment.title()}: {count} conversations")
-        
-        print(f"\nDetailed results saved to: {json_output}")
-        print(f"CSV summary saved to: {csv_output}")
-        
-    except FileNotFoundError:
-        print(f"Error: Could not find data file at {data_path}")
-        print("Please ensure the sample data file exists.")
-    except Exception as e:
-        print(f"Error during analysis: {str(e)}")
 
 if __name__ == "__main__":
     main()

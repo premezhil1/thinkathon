@@ -128,9 +128,16 @@ async def websocket_endpoint(websocket: WebSocket, analysis_id: str):
             if analysis_id in processing_status:
                 status = processing_status[analysis_id]
                 await websocket.send_json(status)
+                if status.get("status") in {"completed", "error"}:
+                    await websocket.send_json(status) 
+                    break
+            else:
+                break
             
             await asyncio.sleep(1)  # Send updates every second
     except WebSocketDisconnect:
+        pass
+    finally:
         manager.disconnect(websocket)
 
 async def update_progress(analysis_id: str, status: str, progress: int, stage: str, message: str):
@@ -206,7 +213,7 @@ async def process_audio_file(file_path: str, analysis_id: str, industry: str = "
             'quality_score': analysis_result.get('quality_score', 0.0)
         }
 
-        await update_progress(analysis_id, "processing", 90, "visualization", "Generating visualizations...")
+        await update_progress(analysis_id, "processing", 90, "Saving", "Generating visualizations...")
         
         # Save to database (run in thread pool to avoid blocking)
         loop = asyncio.get_running_loop()

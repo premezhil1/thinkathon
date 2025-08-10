@@ -33,6 +33,7 @@ import {
   Psychology,
   AccessTime,
   Person,
+  GpsFixed,
 } from '@mui/icons-material';
 import axios from 'axios';
 
@@ -77,17 +78,21 @@ export const AnalysisResults: React.FC = () => {
   const displayTime = (time: any): string => {
     if (!time) return "0s";
   
-    // If already m:ss format, return as is
     if (typeof time === "string" && time.includes(":")) {
       return time;
     }
   
     const num = Number(time) || 0;
+  
     return num > 60
-      ? `${Math.floor(num / 60)}:${String(num % 60).padStart(2, "0")}`
-      : `${num}s`;
+      ? `${Math.floor(num / 60)}:${String(Math.round(num % 60)).padStart(2, "0")}`
+      : `${Math.round(num)}s`;
   };
   
+  const capitalizeFirstLetter = (str: string) => {
+    if (!str) return str;
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -113,9 +118,7 @@ export const AnalysisResults: React.FC = () => {
           <h1 className="page-title">
             Analysis Results
           </h1>
-          <p className="page-subtitle">
-            Comprehensive analysis of conversation
-          </p>
+           
         </div>
         <CircularProgress size={40} />
         <Typography variant="h6" className="mt-2">
@@ -178,6 +181,10 @@ export const AnalysisResults: React.FC = () => {
     color: COLORS[index % COLORS.length],
   })) || [];
 
+  const primaryIntent =
+  analysis?.intents?.[0]?.intent || "Unknown Intent";
+   
+
   const topicScores = (analysis?.topics?.topic_scores ?? {}) as Record<string, number>;
 
   const topicEntries = Object.entries(topicScores)
@@ -200,9 +207,7 @@ export const AnalysisResults: React.FC = () => {
         <h1 className="page-title">
           Analysis Results
         </h1>
-        <p className="page-subtitle">
-          Comprehensive analysis of conversation
-        </p>
+      
       </div>
 
       {/* User Information Section */}
@@ -289,6 +294,9 @@ export const AnalysisResults: React.FC = () => {
                     getOverallSentiment() === 'negative' ? 'error' : 'default'
                 }
                 size="small"
+                sx={{                   
+                  textTransform: 'capitalize' 
+                }}
                 className="analysis-card-chip"
               />
             </CardContent>
@@ -297,13 +305,22 @@ export const AnalysisResults: React.FC = () => {
 
         <Grid item xs={12} sm={6} md={3}>
           <Card className="analysis-card">
-            <CardContent className="analysis-card-content">
-              <Psychology className="analysis-card-icon" />
+            <CardContent className="analysis-card-content">               
+            🎯
               <Typography variant="h6" className="analysis-card-title">
-                Quality Score
+               Primary Intent
               </Typography>
-              <Typography variant="h4" className="analysis-card-value">
-                {Math.round(getQualityScore()  )}%
+              <Typography 
+                variant="h6" 
+                className="analysis-card-value"
+                sx={{ 
+                  fontSize: '1.0rem', 
+                  fontWeight: 500,
+                  textTransform: 'capitalize',
+                  color: 'primary.main'
+                }}
+              >
+                {capitalizeFirstLetter(primaryIntent)}
               </Typography>
             </CardContent>
           </Card>

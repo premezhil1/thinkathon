@@ -50,7 +50,7 @@ const stages = [
   { key: 'transcription', label: 'Transcription', description: 'Converting speech to text' },
   { key: 'diarization', label: 'Speaker Identification', description: 'Identifying speakers' },
   { key: 'analysis', label: 'NLP Analysis', description: 'Analyzing intent and sentiment' },
-  { key: 'quality', label: 'Quality Assessment', description: 'Calculating quality metrics' },
+  { key: 'saving', label: 'Saving', description: 'Saving analysis metrics' },
   { key: 'completed', label: 'Completed', description: 'Analysis finished successfully' },
 ];
 
@@ -291,7 +291,9 @@ export const ProcessingStatus: React.FC<ProcessingStatusProps> = ({
                     {t('participants')}
                   </Typography>
                   <Typography variant="body2" fontWeight="bold">
-                    {analysisResults.participants?.join(', ') || t('not_available')}
+                    {Array.isArray(analysisResults.participants) 
+                      ? analysisResults.participants.join(', ') 
+                      : analysisResults.participants || t('not_available')}
                   </Typography>
                 </Paper>
               </Grid>

@@ -153,64 +153,9 @@ class AudioTranscriber:
                 print(f"Whisper transcription failed: {e}")
                 print("Falling back to SpeechRecognition...")
         
-        # Fallback to SpeechRecognition
-        return self.transcribe_with_speechrecognition(wav_path)
+        
+        return null
     
-    def transcribe_with_speechrecognition(self, audio_path: str) -> Dict[str, Any]:
-        """
-        Transcribe audio using SpeechRecognition.
-        
-        Args:
-            audio_path: Path to the audio file
-            
-        Returns:
-            Transcription results with timestamps and segments
-        """
-        print(f"Transcribing audio with SpeechRecognition: {audio_path}")
-        
-        # Initialize SpeechRecognition
-        r = sr.Recognizer()
-        
-        # Load audio file
-        with sr.AudioFile(audio_path) as source:
-            audio = r.record(source)
-        
-        # Transcribe audio
-        try:
-            full_text = r.recognize_google(audio, language='en-US')
-            duration = librosa.get_duration(filename=audio_path)
-            
-            # Since SpeechRecognition doesn't provide segments, create a single segment
-            # with the full text spanning the entire duration
-            segments = []
-            if full_text.strip():
-                segments.append({
-                    'start': 0.0,
-                    'end': duration,
-                    'text': full_text.strip(),
-                    'confidence': 1.0  # SpeechRecognition doesn't provide confidence
-                })
-            
-            transcription_result = {
-                'full_text': full_text,
-                'segments': segments,
-                'language': 'en-US',
-                'duration': duration
-            }
-            
-            print(f"SpeechRecognition transcription completed. Text length: {len(full_text)}")
-            return transcription_result
-            
-        except Exception as e:
-            print(f"SpeechRecognition transcription failed: {e}")
-            return {
-                'full_text': '',
-                'segments': [],
-                'language': 'unknown',
-                'duration': 0,
-                'error': str(e)
-            } 
- 
     def perform_speaker_diarization(self, transcription) -> List[Dict]:
         """
         Identify speakers in audio using spaCy text classification model (Agent/Customer).

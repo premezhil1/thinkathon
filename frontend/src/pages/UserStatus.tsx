@@ -313,7 +313,9 @@ export const UserStatus: React.FC = () => {
                                 {t('participants')}
                               </Typography>
                               <Typography variant="body2" fontWeight="bold">
-                                {analysis.participants?.join(', ') || 'N/A'}
+                                {Array.isArray(analysis.participants) 
+                                  ? analysis.participants.join(', ') 
+                                  : analysis.participants || 'N/A'}
                               </Typography>
                             </Paper>
                           </Grid>

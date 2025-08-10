@@ -160,16 +160,7 @@ export const Upload: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="app-card" style={{ backgroundColor: 'rgba(255, 152, 0, 0.05)', border: '1px solid rgba(255, 152, 0, 0.2)' }}>
-                  <div className="p-md">
-                    <h4 style={{ color: 'var(--warning-color)', marginTop: 'var(--spcing-xs)', marginBottom: 'var(--spacing-xs)' }}>
-                      📈 {t('upload_qualityScoring')}
-                    </h4>
-                    <p style={{ color: '#666', fontSize: 'var(--font-size-sm)', margin: 0 }}>
-                      {t('upload_qualityDescription')}
-                    </p>
-                  </div>
-                </div>
+                 
               </div>
             </div>
           </div>
