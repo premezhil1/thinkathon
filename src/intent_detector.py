@@ -28,8 +28,8 @@ class IntentDetector:
                 # Initialize BERT-based classifier for general intent detection
                 try:
                     self.classifier = pipeline(
-                        "text-classification",
-                        model="cardiffnlp/twitter-roberta-base-sentiment-latest",
+                         "zero-shot-classification",
+                          model="facebook/bart-large-mnli",                      
                         device=self.device
                     )
                     print("Transformers-based intent detector initialized successfully!")
@@ -111,45 +111,41 @@ class IntentDetector:
             return []
         
         try:
-            # Truncate text to avoid tensor size mismatch
-            # Most transformer models have a max sequence length of 512 tokens
-            max_length = 500  # Leave some buffer for special tokens
+            if not text or not isinstance(text, str):
+                print("Warning: Empty or invalid text input to intent detection.")
+                return []
             
-            # Simple truncation by character count (approximate)
-            if len(text) > max_length * 4:  # Rough estimate: 4 chars per token
+            max_length = 500
+           
+
+            if len(text) > max_length * 4:
                 text = text[:max_length * 4]
-            
-            # Use the classifier to get predictions
-            results = self.classifier(text, truncation=True, max_length=512)
-            
-            # Handle both single result and list of results
+           
+            candidate_labels = ["complaint", "feedback", "inquiry"]
+            results = self.classifier(text,candidate_labels,truncation=True, max_length=512)
+           
             if not isinstance(results, list):
                 results = [results]
             
-            # Convert results to our format
+            
+            
             intents = []
-            for result in results:
-                # Map sentiment labels to intent categories
-                label = result['label'].lower()
-                confidence = result['score']
+            for res in results:  # results is a list with one dict
+                labels = res['labels']        # list of label strings
+                scores = res['scores']        # list of scores (floats)
                 
-                if 'negative' in label or 'bad' in label:
-                    intent = 'complaint'
-                elif 'positive' in label or 'good' in label:
-                    intent = 'feedback'
-                else:
-                    intent = 'inquiry'
-                
-                intents.append({
-                    'intent': intent,
-                    'confidence': confidence,
-                    'method': 'transformers'
-                })
+                for label, score in zip(labels, scores):
+                    intents.append({
+                        'intent': label,
+                        'confidence': score,
+                        'method': 'transformers'
+                    })
             
             return intents
         except Exception as e:
             print(f"Error in transformers intent detection: {e}")
             return []
+
     
     def detect_intent_with_rules(self, text: str, industry: str = 'general') -> List[Dict]:
         """Use rule-based pattern matching for intent detection."""
@@ -227,13 +223,15 @@ class IntentDetector:
             intents = []
             method_used = 'rule_based'
         
+        print(f"Transformer Based {intents}")
         # Always add rule-based detection for better coverage
         rule_intents = self.detect_intent_with_rules(full_text, industry)
+        print(f"Rule  Based {rule_intents}")
         intents.extend(rule_intents)
-        
+      
         # Remove duplicates and merge similar intents
         merged_intents = self._merge_similar_intents(intents)
-        
+        print(f"final Intent {merged_intents}")
         # Determine primary intent
         primary_intent = merged_intents[0] if merged_intents else None
         overall_confidence = primary_intent['confidence'] if primary_intent else 0.0
@@ -304,55 +302,9 @@ class IntentDetector:
         merged.sort(key=lambda x: x['confidence'], reverse=True)
         return merged
     
-    def get_intent_explanation(self, intent: str) -> str:
-        """Get human-readable explanation for an intent."""
-        explanations = {
-            'complaint': 'Customer is expressing dissatisfaction or reporting a problem',
-            'inquiry': 'Customer is seeking information or asking questions',
-            'feedback': 'Customer is providing positive feedback or suggestions',
-            'support_request': 'Customer is requesting help or technical assistance',
-            'billing_inquiry': 'Customer has questions about billing or payments',
-            'product_inquiry': 'Customer is asking about products or services',
-            'ecommerce_order_inquiry': 'Customer is asking about their order or delivery',
-            'ecommerce_return_request': 'Customer wants to return or exchange a product',
-            'telecom_service_issue': 'Customer is reporting network or service problems',
-            'healthcare_appointment': 'Customer wants to schedule or modify an appointment',
-            'travel_booking_inquiry': 'Customer is asking about travel bookings',
-            'realestate_property_inquiry': 'Customer is interested in property information'
-        }
-        
-        return explanations.get(intent, f'Customer intent: {intent}')
 
 def main():
-    """Test the intent detector."""
-    detector = IntentDetector()
-    
-    # Test conversations
-    test_conversations = [
-        {
-            'dialogue': [
-                {'speaker': 'Customer', 'text': 'Hi, I have a problem with my recent order'},
-                {'speaker': 'Agent', 'text': 'I can help you with that. What seems to be the issue?'},
-                {'speaker': 'Customer', 'text': 'The product arrived damaged and I want a refund'}
-            ],
-            'industry': 'eCommerce'
-        },
-        {
-            'dialogue': [
-                {'speaker': 'Customer', 'text': 'Hello, I would like to know about your internet plans'},
-                {'speaker': 'Agent', 'text': 'Sure! What speed are you looking for?'},
-                {'speaker': 'Customer', 'text': 'Something fast for streaming and gaming'}
-            ],
-            'industry': 'Telecom'
-        }
-    ]
-    
-    for i, conv in enumerate(test_conversations):
-        print(f"\n--- Test Conversation {i+1} ---")
-        result = detector.analyze_conversation(conv['dialogue'], conv['industry'])
-        print(f"Primary Intent: {result['primary_intent']}")
-        print(f"All Intents: {result['intents']}")
-        print(f"Method Used: {result['method_used']}")
+    """Intent detector."""     
 
 if __name__ == "__main__":
     main()

@@ -38,8 +38,6 @@ class CallAnalyzer:
         Returns:
             Complete analysis results
         """
-      
-        
         
         # Extract conversation details with safe defaults
         conv_id = conversation.get('conversation_id', 'unknown')
@@ -67,8 +65,7 @@ class CallAnalyzer:
                 segment['text'] = ''
             if 'speaker' not in segment:
                 print(f"Warning: Dialogue segment {i} missing 'speaker' field")
-                segment['speaker'] = 'Unknown'
-        
+                segment['speaker'] = 'Unknown'       
          
         
         try:

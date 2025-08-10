@@ -5,7 +5,8 @@ import numpy as np
 class SentimentAnalyzer:
     def __init__(self):
             # Initialize the transformer sentiment pipeline
-            self.sentiment_pipeline = pipeline("sentiment-analysis", model="cardiffnlp/twitter-roberta-base-sentiment")
+            self.sentiment_pipeline = pipeline( "sentiment-analysis",
+    model="cardiffnlp/twitter-roberta-base-sentiment-latest")
 
     def analyze_conversation(self, dialogue: List[Dict]) -> Dict:
         """
@@ -36,10 +37,9 @@ class SentimentAnalyzer:
 
             # Analyze sentiment using transformer
             result = self.sentiment_pipeline(text)[0]  # e.g., {'label': 'NEGATIVE', 'score': 0.998}
-            print(f"sentiment text {text}")
-            print(f"sentiment always {result}")
+
             sentiment = {
-                'label': result['label'].lower(),         # e.g., 'negative'
+                'label': result['label'].lower(),           # e.g., 'negative'
                 'confidence': round(result['score'], 3),  # e.g., 0.998
                 'method': 'transformer'
             }
@@ -60,71 +60,64 @@ class SentimentAnalyzer:
 
             all_sentiments.append(sentiment)
 
-        overall_sentiment = self._calculate_overall_sentiment(all_sentiments)
+         
+        full_text = ' '.join([segment.get('text', '') for segment in dialogue])
+
+        overall_sentiment = self.detect_intent_with_transformers(full_text)
+         
 
         participant_summaries = {
             speaker: self._summarize_participant_sentiment(sents)
             for speaker, sents in participant_sentiments.items()
         }
 
-        emotional_intensity = self._calculate_emotional_intensity(all_sentiments)
-
         return {
             'overall_sentiment': overall_sentiment,
             'participant_sentiments': participant_summaries,
             'sentiment_progression': sentiment_progression,
-            'emotional_intensity': emotional_intensity,
             'total_segments': len(dialogue),
             'analysis_method': all_sentiments[0]['method'] if all_sentiments else 'none'
         }
 
-    def _calculate_overall_sentiment(self, sentiments: List[Dict]) -> Dict:
-        """Calculate overall sentiment from all segments."""
-        if not sentiments:
-            return {'label': 'neutral', 'confidence': 0.0}
+    def detect_intent_with_transformers(self, text: str) -> List[Dict]:
+        """Use transformers model for intent detection."""
+        if not self.sentiment_pipeline:
+            return []
         
-        # Count sentiments by label and weight by confidence
-        positive_sum = 0
-        negative_sum = 0
-        neutral_sum = 0
-        
-        for s in sentiments:
-            label = s.get('label', 'neutral')
-            confidence = s.get('confidence', 0.5)
+        try:
+            # Truncate text to avoid tensor size mismatch
+            # Most transformer models have a max sequence length of 512 tokens
+            max_length = 500  # Leave some buffer for special tokens
+             
+            # Simple truncation by character count (approximate)
+            if len(text) > max_length * 4:  # Rough estimate: 4 chars per token
+                text = text[:max_length * 4]
             
-            if label == 'positive':
-                positive_sum += confidence
-            elif label == 'negative':
-                negative_sum += confidence
-            else:  # neutral or unknown
-                neutral_sum += confidence
-        
-        total = positive_sum + negative_sum + neutral_sum
-        if total == 0:
-            return {'label': 'neutral', 'confidence': 0.0}
-        
-        positive_ratio = positive_sum / total
-        negative_ratio = negative_sum / total
-        neutral_ratio = neutral_sum / total
-        
-        # Determine overall label
-        if positive_ratio > negative_ratio and positive_ratio > neutral_ratio:
-            label = 'positive'
-            confidence = positive_ratio
-        elif negative_ratio > positive_ratio and negative_ratio > neutral_ratio:
-            label = 'negative'
-            confidence = negative_ratio
-        else:
-            label = 'neutral'
-            confidence = neutral_ratio
-        
-        return {
-            'label': label,
-            'confidence': confidence,
-            'positive_ratio': positive_ratio,
-            'negative_ratio': negative_ratio,
-            'neutral_ratio': neutral_ratio
-        }
+            # Use the classifier to get predictions
+            results = self.sentiment_pipeline(text, truncation=True, max_length=512)
+            
+            # Handle both single result and list of results
+            if not isinstance(results, list):
+                results = [results]
+            
+            print(f"premnafjksdsd: {results}")
+
+            # Convert results to our format
+            intents = []  # list, not dict
+            for result in results:
+                confidence = result['score']
+                intents.append({
+                    'label': result['label'].lower(),
+                    'confidence': confidence,
+                    'method': 'transformers'
+                })
+
+            # Return only the first result (if available)
+            return intents[0] if intents else None
+        except Exception as e:
+            print(f"Error in transformers intent detection: {e}")
+            return []
+ 
 
     def _summarize_participant_sentiment(self, sentiments: List[Dict]) -> Dict:
         """Summarize sentiment for a specific participant."""
@@ -161,25 +154,6 @@ class SentimentAnalyzer:
             'sentiment_counts': sentiment_counts,
             'total_segments': len(sentiments)
         }
-
-    def _calculate_emotional_intensity(self, sentiments: List[Dict]) -> float:
-        """Calculate overall emotional intensity of the conversation."""
-        if not sentiments:
-            return 0.0
-        
-        intensities = []
-        for sentiment in sentiments:
-            # Use sentiment confidence as intensity measure
-            confidence = sentiment.get('confidence', 0.5)
-            # Higher confidence in positive/negative sentiments indicates higher intensity
-            label = sentiment.get('label', 'neutral')
-            if label in ['positive', 'negative']:
-                intensities.append(confidence)
-            else:
-                # Neutral sentiments have lower intensity
-                intensities.append(confidence * 0.5)
-        
-        return float(np.mean(intensities)) if intensities else 0.0
 
 if __name__ == "__main__":
     main()
