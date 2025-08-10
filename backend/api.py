@@ -157,7 +157,7 @@ async def process_audio_file(file_path: str, analysis_id: str, industry: str = "
         # Run CPU-intensive transcription in thread pool to avoid blocking
         loop = asyncio.get_running_loop()
         with ThreadPoolExecutor() as pool:
-            transcription = await loop.run_in_executor(pool, audio_transcriber.transcribe_with_speakers, file_path)
+            transcription = await loop.run_in_executor(pool, audio_transcriber.transcribe_with_whisper, file_path)
         
         if not transcription:
             await update_progress(analysis_id, "error", 0, "transcription", "Failed to transcribe audio")
@@ -175,45 +175,19 @@ async def process_audio_file(file_path: str, analysis_id: str, industry: str = "
             await update_progress(analysis_id, "error", 0, "transcription", "Failed to diarization")
             return
 
-        await update_progress(analysis_id, "processing", 50, "analysis", "Performing NLP analysis...")
-        
-        # Extract conversation data from transcription         
-        speakers = transcription_result.get('dialogue', []) 
-        
-        # Calculate duration and participants
-        duration = transcription_result.get('duration', 0.0)
-        participants = list(set(seg.get('speaker', 'Unknown') for seg in speakers)) if speakers else ['Agent', 'Customer']
-        
-        # Ensure we have Agent and Customer as participants
-        if 'Agent' not in participants:
-            participants.append('Agent')
-        if 'Customer' not in participants:
-            participants.append('Customer')
+        await update_progress(analysis_id, "processing", 50, "analysis", "Performing NLP analysis...") 
 
-        # Format conversation data for analysis
-        formatted_conversation = {
-            'conversation_id': analysis_id,
-            'source_file': os.path.basename(file_path),
-            'industry': industry,
-            'duration': duration,
-            'participants': participants,
-            'dialogue': speakers,
-            'full_text': transcription_result.get('full_text', ''),
-            'processing_timestamp': datetime.now().isoformat()
-        }
+        transcription_result['industry'] = industry
 
         await update_progress(analysis_id, "processing", 60, "saving", "Analyzing Conversation...")
         
         # Run CPU-intensive analysis in thread pool to avoid blocking
         loop = asyncio.get_running_loop()
         with ThreadPoolExecutor() as pool:
-            analysis_result = await loop.run_in_executor(pool, call_analyzer.analyze_conversation, formatted_conversation)
+            analysis_result = await loop.run_in_executor(pool, call_analyzer.analyze_conversation, transcription_result)
         
         await update_progress(analysis_id, "processing", 80, "saving", "Saving analysis results...")
-        
-        # Extract key metrics
-        quality_score = analysis_result.get('quality_score', 0.0)
-        overall_sentiment = analysis_result.get('overall_sentiment', {})
+         
         
         # Prepare complete analysis data for database
         complete_analysis_data = {
@@ -222,14 +196,14 @@ async def process_audio_file(file_path: str, analysis_id: str, industry: str = "
             'processed_at': datetime.now().isoformat(),
             'source_file': os.path.basename(file_path),
             'industry': industry,
-            'duration': duration,
-            'participants': len(participants),
-            'sentiment': overall_sentiment.get('label', 'neutral'),
+            'duration': transcription_result['duration'],
+            'participants': len(transcription_result['participants']),
+            'sentiment': analysis_result.get('overall_sentiment', {}).get('label', 'neutral'),
             'transcription': transcription_result,
-            'conversation': speakers,
+            'conversation': transcription_result.get('dialogue', []) ,
             'analysis': analysis_result,
             'file_path': file_path,
-            'quality_score': quality_score
+            'quality_score': analysis_result.get('quality_score', 0.0)
         }
 
         await update_progress(analysis_id, "processing", 90, "visualization", "Generating visualizations...")
@@ -334,13 +308,13 @@ async def upload_audio(
 
 @app.get("/api/status/{analysis_id}", response_model=ProcessingStatus)
 async def get_analysis_status(analysis_id: str):
-    print(f"Status requested for analysis_id={analysis_id}")
+    #print(f"Status requested for analysis_id={analysis_id}")
     if analysis_id not in processing_status:
         print(f"Analysis {analysis_id} not found")
         raise HTTPException(status_code=404, detail="Analysis not found")
     
     status = processing_status[analysis_id]
-    print(f"Returning status for {analysis_id}: {status}")
+    #print(f"Returning status for {analysis_id}: {status}")
     return ProcessingStatus(**status)
 
 @app.get("/api/stats")
@@ -368,49 +342,23 @@ async def get_database_stats(
             content={"error": f"Failed to get stats: {str(e)}"}
         )
 
+def format_time(seconds):
+    seconds = int(seconds)  # ensure integer
+    if seconds > 60:
+        minutes = seconds // 60
+        remaining_seconds = seconds % 60
+        return f"{minutes}:{remaining_seconds:02d}"
+    return str(seconds)
+
 @app.get("/api/results/{analysis_id}")
 async def get_results(analysis_id: str):
     """Get analysis results"""
     try:
-        result = db.get_analysis_result(analysis_id)
-        if result:
-            # Transform the data structure to match what the React frontend expects
-            transformed_result = {
-                "conversation_data": {
-                    "conversation_id": analysis_id,
-                    "industry": result.get("industry", "general"),
-                    "participants": result.get("participants", 2),
-                    "dialogue": []
-                },
-                "analysis": result.get("analysis", {}),
-                "processing_info": {
-                    "analysis_id": analysis_id,
-                    "processed_at": result.get("processed_at"),
-                    "source_file": result.get("source_file"),
-                    "duration": result.get("duration", 180),
-                    "user_id": result.get("user_id", 180),
-                }
-               
-            }
+        
+        results = db.get_analysis_result(analysis_id)
+        if results:           
             
-            # Transform conversation data to match expected format
-            conversation = result.get("conversation", [])
-            for turn in conversation:
-                transformed_turn = {
-                    "conversation_id": analysis_id,
-                    "speaker": turn.get("speaker", "Unknown"),
-                    "text": turn.get("text", ""),
-                    "timestamp": turn.get("timestamp", "00:00:00"),
-                    "start": 0,  # Default values for React component
-                    "end": 10
-                }
-                transformed_result["conversation_data"]["dialogue"].append(transformed_turn)
-            
-            # Ensure analysis has conversation_id
-            if "conversation_id" not in transformed_result["analysis"]:
-                transformed_result["analysis"]["conversation_id"] = analysis_id
-            
-            return transformed_result
+            return results
         else:
             return JSONResponse(
                 status_code=404,

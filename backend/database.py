@@ -159,7 +159,7 @@ class CallAnalyzerDB:
                 participant_sentiments = json.dumps(analysis.get('participant_sentiments', []))
                 topics_data = json.dumps(analysis.get('topic_analysis', {}))
                 qualityMetrics = analysis.get('quality_metrics', {})                 
-                summary = analysis['conversation_summary']
+                summary = analysis.get('conversation_summary', '')
                 quality_score = qualityMetrics.get('overall_score', 0.0)
                 insights = json.dumps(analysis.get('insights', []))
                 
@@ -190,7 +190,9 @@ class CallAnalyzerDB:
                 
                 print(f"[DEBUG] INSERT executed, about to commit...")
                 conn.commit()
-                
+                print(f"[DEBUG] Successfully saved analysis result for ID: {analysis_id}")
+                return True
+            
         except sqlite3.IntegrityError as e:
             print(f"[ERROR] Database integrity error: {e}")
             print(f"[ERROR] Analysis ID: {analysis_data.get('analysis_id', 'UNKNOWN')}")
@@ -243,6 +245,43 @@ class CallAnalyzerDB:
         except Exception as e:
             print(f"Error retrieving analysis results: {e}")
             return []
+
+    def _row_to_analysis_dict(self, row) -> Dict[str, Any]:
+        """Convert database row to analysis dictionary format."""
+        try:
+            return {
+                "analysis_id": row['analysis_id'],
+                "processed_at": row['processed_at'],
+                "source_file": row['source_file'],
+                "industry": row['industry'],
+                "duration": row['duration'],
+                "participants": row['participants'],
+                "sentiment": row['sentiment'],
+                "transcription": {
+                    "full_text": row['transcription_text'],
+                    "confidence": row['transcription_confidence'],
+                    "language": row['transcription_language'],
+                    "duration": row['duration']
+                },
+                "conversation": json.loads(row['conversation_data']) if row['conversation_data'] else [],
+                "analysis": {
+                    "intents": json.loads(row['intents_data']) if row['intents_data'] else [],
+                    "overall_sentiment": {
+                        "label": row['overall_sentiment_label'],
+                        "score": row['overall_sentiment_score']
+                    },
+                    "participant_sentiments": json.loads(row['participant_sentiments']) if row['participant_sentiments'] else [],
+                    "topics": json.loads(row['topics_data']) if row['topics_data'] else [],
+                    "summary": row['summary'],
+                    "quality_score": row['quality_score'],
+                    "insights": json.loads(row['insights']) if row['insights'] else [],
+                    "sentiment": row['sentiment']  # For toLowerCase compatibility
+                },
+                "file_path": row['file_path']
+            }
+        except Exception as e:
+            print(f"Error converting row to dict: {e}")
+            return {}
     
     def get_analysis_history(self, limit: int = 50, date_from: str = None, date_to: str = None) -> List[Dict[str, Any]]:
         """Get analysis history for history page with optional date filtering."""
