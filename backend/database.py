@@ -43,7 +43,7 @@ class CallAnalyzerDB:
                     user_id TEXT NOT NULL DEFAULT 'default_user',
                     processed_at TEXT NOT NULL,
                     source_file TEXT NOT NULL,
-                    industry TEXT NOT NULL CHECK (industry IN ('eCommerce', 'Telecom', 'Healthcare', 'Travel', 'Real Estate')),
+                    industry TEXT NOT NULL CHECK (industry IN ('eCommerce', 'Telecom', 'Healthcare', 'Travel', 'Real Estate', 'Customer Service', 'Insurance')),
                     duration REAL DEFAULT 0.0,
                     participants INTEGER DEFAULT 0,
                     sentiment TEXT DEFAULT 'neutral',
@@ -135,7 +135,7 @@ class CallAnalyzerDB:
                     return False
                 
                 # Validate industry constraint
-                valid_industries = ['eCommerce', 'Telecom', 'Healthcare', 'Travel', 'Real Estate']
+                valid_industries = ['eCommerce', 'Telecom', 'Healthcare', 'Travel', 'Real Estate', 'Customer Service', 'Insurance']
                 if industry not in valid_industries:
                     print(f"[ERROR] Invalid industry '{industry}'. Must be one of: {valid_industries}")
                     return False
@@ -684,7 +684,7 @@ class CallAnalyzerDB:
     
     def get_available_industries(self) -> List[str]:
         """Get list of available industries (restricted to specified list)."""
-        return ['eCommerce', 'Telecom', 'Healthcare', 'Travel', 'Real Estate']
+        return ['eCommerce', 'Telecom', 'Healthcare', 'Travel', 'Real Estate', 'Customer Service', 'Insurance']
     
     def get_analysis_results_by_user(self, user_id: str, limit: int = 50, offset: int = 0) -> List[Dict[str, Any]]:
         """Get analysis results for a specific user with pagination."""

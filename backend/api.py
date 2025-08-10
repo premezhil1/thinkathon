@@ -54,7 +54,7 @@ processing_status = {}
 analysis_results = {}
 
 # Valid industries (restricted list)
-VALID_INDUSTRIES = ['eCommerce', 'Telecom', 'Healthcare', 'Travel', 'Real Estate']
+VALID_INDUSTRIES = ['eCommerce', 'Telecom', 'Healthcare', 'Travel', 'Real Estate', 'Customer Service', 'Insurance']
 
 # WebSocket connections for real-time updates
 class ConnectionManager:

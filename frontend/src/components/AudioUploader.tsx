@@ -50,6 +50,8 @@ export const AudioUploader: React.FC<AudioUploaderProps> = ({
 
   const industries = [
     { value: 'eCommerce', label: 'eCommerce' },
+    { value: 'Insurance', label: 'Insurance' },
+    { value: 'Customer Service', label: 'Customer Service' },
     { value: 'Telecom', label: 'Telecom' },
     { value: 'Healthcare', label: 'Healthcare' },
     { value: 'Travel', label: 'Travel' },
