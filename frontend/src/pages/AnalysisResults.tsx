@@ -37,9 +37,11 @@ import {
 import axios from 'axios';
 
 interface AnalysisData {
-  conversation_data: any;
+  conversation: any;
   analysis: any;
+  duration: any;
   processing_info: any;
+  participants: any;
   user_info?: {
     user_id: string;
     username: string;
@@ -72,6 +74,20 @@ export const AnalysisResults: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { t } = useTranslation();
+  const displayTime = (time: any): string => {
+    if (!time) return "0s";
+  
+    // If already m:ss format, return as is
+    if (typeof time === "string" && time.includes(":")) {
+      return time;
+    }
+  
+    const num = Number(time) || 0;
+    return num > 60
+      ? `${Math.floor(num / 60)}:${String(num % 60).padStart(2, "0")}`
+      : `${num}s`;
+  };
+  
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -119,15 +135,15 @@ export const AnalysisResults: React.FC = () => {
     );
   }
 
-  const { conversation_data, analysis, processing_info, user_info } = data;
+  const { conversation, analysis, processing_info, user_info } = data;
 
   const getDuration = () => {
-    const duration = processing_info?.duration || conversation_data?.duration || 0;
+    const duration = data?.duration || conversation?.duration || 0;
     return typeof duration === 'number' && !isNaN(duration) && duration > 0 ? duration : 0;
   };
 
   const getParticipantCount = () => {
-    const participants = conversation_data?.participants;
+    const participants = data?.participants;
     if (typeof participants === 'number') {
       return participants;
     }
@@ -137,38 +153,7 @@ export const AnalysisResults: React.FC = () => {
     return 0;
   };
 
-  const ConversationSummary = ({ summary }: { summary: string }) => {
-    const conversationId = summary?.match(/Conversation ([\w-]+)/)?.[1] || 'N/A';
-    const industry = summary?.match(/\((.*?) industry\)/)?.[1] || 'N/A';
-    const primaryIntent = summary?.match(/PRIMARY INTENT: (.*?)\n/)?.[1] || 'N/A';
-    const mainTopic = summary?.match(/MAIN TOPIC: (.*?)\n/)?.[1] || 'N/A';
-    const sentiment = summary?.match(/OVERALL SENTIMENT: (.*?)\n/)?.[1] || 'N/A';
-    const resolution = summary?.match(/RESOLUTION STATUS: (.*?)\n/)?.[1] || 'N/A';
-    const finalSummary = summary?.split("RESOLUTION STATUS:")[1]?.split("\n\n")[1] || 'No summary available';
-
-    return (
-      <Box className="conversation-summary">
-        <Typography variant="body2" className="conversation-summary-industry">
-          <strong>Industry:</strong> {industry}
-        </Typography>
-        <Typography variant="body2" className="conversation-summary-primary-intent">
-          <strong>Primary Intent:</strong> {primaryIntent}
-        </Typography>
-        <Typography variant="body2" className="conversation-summary-main-topic">
-          <strong>Main Topic:</strong> {mainTopic}
-        </Typography>
-        <Typography variant="body2" className="conversation-summary-sentiment">
-          <strong>Overall Sentiment:</strong> {sentiment}
-        </Typography>
-        <Typography variant="body2" className="conversation-summary-resolution">
-          <strong>Resolution Status:</strong> {resolution}
-        </Typography>
-        <Typography variant="body2" className="conversation-summary-final-summary">
-          <strong>Summary:</strong> {finalSummary}
-        </Typography>
-      </Box>
-    );
-  };
+   
 
   const getOverallSentiment = () => {
     return analysis.overall_sentiment?.label || 'Unknown';
@@ -469,7 +454,7 @@ export const AnalysisResults: React.FC = () => {
                 Full Transcript
               </h3>
               <div className="transcript-container">
-                {conversation_data?.dialogue?.map((segment: any, index: number) => {
+                {conversation?.map((segment: any, index: number) => {
                   const isAgent = segment?.speaker?.toLowerCase().includes('agent') ||
                     segment?.speaker?.toLowerCase().includes('support') ||
                     segment?.speaker?.toLowerCase().includes('representative');
@@ -511,7 +496,8 @@ export const AnalysisResults: React.FC = () => {
                             className={`chat-speaker-chip ${isAgent ? 'agent' : 'customer'}`}
                           />
                           <span className={`chat-timestamp ${isAgent ? 'agent' : 'customer'}`}>
-                            {Math.round(segment?.start || 0)}s - {Math.round(segment?.end || 0)}s
+                           
+                            {displayTime(segment?.start)} - {displayTime(segment?.end)}
                           </span>
                         </div>
                       </div>
