@@ -73,8 +73,8 @@ class IntentDetector:
                 r'\b(delivery|shipping|order|purchase)\b'
             ]
         }
-        
-        # Industry-specific intent patterns
+
+
         self.industry_patterns = {
             'eCommerce': {
                 'order_inquiry': [r'\b(order|delivery|shipping|tracking|package)\b'],
@@ -100,12 +100,63 @@ class IntentDetector:
                 'property_inquiry': [r'\b(property|house|apartment|listing|viewing)\b'],
                 'mortgage': [r'\b(mortgage|loan|financing|credit|approval)\b'],
                 'maintenance': [r'\b(repair|maintenance|issue|problem|fix)\b']
+            },
+            'Customer Service': {
+                'complaint': [r'\b(complaint|issue|problem|poor service|unsatisfied|rude)\b'],
+                'feedback': [r'\b(feedback|suggestion|review|comment|praise)\b'],
+                'general_inquiry': [r'\b(question|information|help|assistance|support)\b']
+            },
+            'Insurance': {
+                'policy_inquiry': [r'\b(policy|coverage|benefit|premium|deductible)\b'],
+                'claim_request': [r'\b(claim|reimbursement|compensation|settlement)\b'],
+                'renewal_cancellation': [r'\b(renew|renewal|cancel|termination)\b']
             }
+        }
+
+        
+        # Industry-specific intent patterns
+        self.industry_labels = {
+            "eCommerce": [
+                "product_inquiry", "order_status", "return_request",
+                "refund_request", "discount_inquiry", "payment_issue",
+                "shipping_information", "product_complaint"
+            ],
+            "Telecom": [
+                "plan_upgrade", "new_connection_request", "network_issue",
+                "bill_payment_issue", "sim_replacement", "roaming_activation",
+                "number_portability", "technical_support"
+            ],
+            "Healthcare": [
+                "appointment_booking", "reschedule_appointment", "cancel_appointment",
+                "test_results_inquiry", "insurance_coverage_check", "symptom_inquiry",
+                "doctor_availability", "medical_record_request"
+            ],
+            "Travel": [
+                "flight_booking", "hotel_reservation", "itinerary_change",
+                "cancellation_request", "refund_request", "baggage_inquiry",
+                "visa_information", "travel_insurance_inquiry"
+            ],
+            "Real Estate": [
+                "property_listing_inquiry", "property_visit_request", "price_negotiation",
+                "loan_assistance", "rent_inquiry", "sale_inquiry",
+                "legal_documentation_request", "neighborhood_information"
+            ],
+            "Insurance": [
+                "policy_purchase", "policy_renewal", "premium_payment",
+                "claim_status", "claim_filing", "coverage_inquiry",
+                "policy_cancellation", "beneficiary_update"
+            ],
+            "Customer Service": [
+                "greeting", "complaint", "feedback",
+                "technical_support", "account_update",
+                "service_cancellation", "billing_inquiry",
+                "follow_up_request"
+            ]
         }
         
         print("Intent Detector initialized successfully!")
     
-    def detect_intent_with_transformers(self, text: str) -> List[Dict]:
+    def detect_intent_with_transformers(self, text: str, industry: str = 'general') -> List[Dict]:
         """Use transformers model for intent detection."""
         if not self.classifier:
             return []
@@ -121,7 +172,8 @@ class IntentDetector:
             if len(text) > max_length * 4:
                 text = text[:max_length * 4]
            
-            candidate_labels = ["complaint", "feedback", "inquiry"]
+            #candidate_labels = ["complaint", "feedback", "inquiry"]
+            candidate_labels = self.industry_labels.get(industry)
             results = self.classifier(text,candidate_labels,truncation=True, max_length=512)
            
             if not isinstance(results, list):
@@ -217,7 +269,7 @@ class IntentDetector:
         
         # Try transformers first, fallback to rules
         if TRANSFORMERS_AVAILABLE and self.classifier:
-            intents = self.detect_intent_with_transformers(full_text)
+            intents = self.detect_intent_with_transformers(full_text, industry)
             method_used = 'transformers'
         else:
             intents = []
@@ -247,7 +299,7 @@ class IntentDetector:
             
             # Detect intents for this segment
             if TRANSFORMERS_AVAILABLE and self.classifier:
-                segment_intents = self.detect_intent_with_transformers(text)
+                segment_intents = self.detect_intent_with_transformers(text, industry)
             else:
                 segment_intents = self.detect_intent_with_rules(text, industry)
             
