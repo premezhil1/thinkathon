@@ -25,13 +25,16 @@ import {
 } from '@mui/material';
 import {
   ArrowBack,
-  Person,
+  AudioFile,
+  PlayArrow,
   TrendingUp,
   Phone,
   Schedule,
   Star,
   Psychology,
+  Download,
   Business,
+  Group,
   Refresh,
   DateRange,
   Assessment,
@@ -74,6 +77,19 @@ interface User {
   updated_at: string;
 }
 
+interface UserStatusData {
+  user_id: string;
+  total_analyses: number;
+  audio_files: AudioFile[];
+  recent_analyses: AnalysisResult[];
+  status: string;
+}
+
+ const formatFileSize = (bytes: number) => {
+    const mb = bytes / (1024 * 1024);
+    return `${mb.toFixed(2)} MB`;
+  };
+
 interface BasicMetrics {
   total_calls: number;
   avg_quality_score: number;
@@ -82,6 +98,37 @@ interface BasicMetrics {
   first_call_date: string;
   last_call_date: string;
 }
+
+
+interface UserStatusData {
+  user_id: string;
+  total_analyses: number;
+  audio_files: AudioFile[];
+  recent_analyses: AnalysisResult[];
+  status: string;
+}
+
+interface AnalysisResult {
+  analysis_id: string;
+  conversation_data: any;
+  intent_results: any;
+  sentiment_results: any;
+  topic_results: any;
+  quality_score: number;
+  participants: string[];
+  duration: number;
+  industry: string;
+  processed_at: string;
+  audio_file_path: string;
+}
+
+interface AudioFile {
+  filename: string;
+  size: number;
+  created_at: string;
+  path: string;
+}
+
 
 interface PerformanceData {
   user_id: string;
@@ -102,7 +149,23 @@ export const UserDashboard: React.FC = () => {
   const [performanceData, setPerformanceData] = useState<PerformanceData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [statusData, setStatusData] = useState<UserStatusData | null>(null);
 
+
+  const fetchUserStatus = async () => {
+      if (!userId) return;
+      
+      try {
+        setLoading(true);
+        const response = await axios.get(`/api/user/${userId}/status`);
+        setStatusData(response.data);
+        setError(null);
+      } catch (err: any) {
+        setError(err.response?.data?.detail || t('failedToFetchUserStatus'));
+      } finally {
+        setLoading(false);
+      }
+    };
   const fetchPerformanceData = async () => {
     if (!userId) return;
     
@@ -120,6 +183,7 @@ export const UserDashboard: React.FC = () => {
 
   useEffect(() => {
     fetchPerformanceData();
+    fetchUserStatus();
   }, [userId]);
 
   const getRoleIcon = (role: string) => {
@@ -131,6 +195,13 @@ export const UserDashboard: React.FC = () => {
       default:
         return <PersonOutline />;
     }
+  };
+
+  const getQualityLabel = (score: number) => {
+    if (score >= 8) return t('excellent');
+    if (score >= 6) return t('good');
+    if (score >= 4) return t('fair');
+    return t('poor');
   };
 
   const getRoleColor = (role: string): 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' => {
@@ -251,6 +322,16 @@ export const UserDashboard: React.FC = () => {
     calls: item.daily_calls,
     quality: item.daily_avg_quality,
   }));
+
+   if (!statusData) {
+      return (
+        <div className="page-container user-status-no-data-container">
+          <Alert severity="info">
+            {t('noUserDataFound')}
+          </Alert>
+        </div>
+      );
+    }
 
   return (
     <div className="page-container">
@@ -422,6 +503,161 @@ export const UserDashboard: React.FC = () => {
             </CardContent>
           </Card>
         </Grid>
+
+
+            {/* Audio Files */}
+                <Grid item xs={12} md={6}>
+                  <Card>
+                    <CardContent>
+                      <h3 className="user-status-section-title">
+                        <AudioFile /> {t('savedAudioFiles')}
+                      </h3>
+                      {statusData.audio_files.length === 0 ? (
+                        <Alert severity="info">
+                          {t('noAudioFilesUploaded')}
+                        </Alert>
+                      ) : (
+                        <List>
+                          {statusData.audio_files.map((file, index) => (
+                            <React.Fragment key={index}>
+                              <ListItem className="user-status-list-item">
+                                <ListItemIcon>
+                                  <AudioFile color="primary" />
+                                </ListItemIcon>
+                                <ListItemText
+                                  primary={file.filename}
+                                  secondary={
+                                    <div>
+                                      <p className="text-caption">
+                                        {t('size')} : {formatFileSize(file.size)}
+                                      </p>
+                                      <p className="text-caption">
+                                        {t('uploaded')} : {new Date(file.created_at).toLocaleDateString()}
+                                      </p>
+                                    </div>
+                                  }
+                                />
+                                <div>
+                                  <Tooltip title={t('playAudio')}>
+                                    <IconButton size="small">
+                                      <PlayArrow />
+                                    </IconButton>
+                                  </Tooltip>
+                                  <Tooltip title={t('download')}>
+                                    <IconButton size="small">
+                                      <Download />
+                                    </IconButton>
+                                  </Tooltip>
+                                </div>
+                              </ListItem>
+                              {index < statusData.audio_files.length - 1 && <Divider />}
+                            </React.Fragment>
+                          ))}
+                        </List>
+                      )}
+                    </CardContent>
+                  </Card>
+                </Grid>
+        
+                {/* Recent Analyses */}
+                <Grid item xs={12} md={6}>
+                  <Card>
+                    <CardContent>
+                      <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Psychology /> {t('recentAnalyses')}
+                      </Typography>
+                      {statusData.recent_analyses.length === 0 ? (
+                        <Alert severity="info">
+                          {t('noAnalysesCompleted')}
+                        </Alert>
+                      ) : (
+                        <List>
+                          {statusData.recent_analyses.map((analysis, index) => (
+                            <React.Fragment key={analysis.analysis_id}>
+                              <ListItem sx={{ px: 0, flexDirection: 'column', alignItems: 'stretch' }}>
+                                <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', mb: 1 }}>
+                                  <Typography variant="subtitle2">
+                                    {t('analysis')} {analysis.analysis_id.slice(0, 8)}...
+                                  </Typography>
+                                  <Chip 
+                                    label={analysis.industry} 
+                                    size="small" 
+                                    color="primary" 
+                                    variant="outlined" 
+                                  />
+                                </Box>
+                                
+                                <Grid container spacing={2} sx={{ mb: 1 }}>
+                                  <Grid item xs={6}>
+                                    <Paper sx={{ p: 1, textAlign: 'center' }}>
+                                      <Group sx={{ fontSize: 20, color: 'text.secondary' }} />
+                                      <Typography variant="caption" display="block">
+                                        {t('participants')}
+                                      </Typography>
+                                      <Typography variant="body2" fontWeight="bold">
+                                        {Array.isArray(analysis.participants) 
+                                          ? analysis.participants.join(', ') 
+                                          : analysis.participants || 'N/A'}
+                                      </Typography>
+                                    </Paper>
+                                  </Grid>
+                                  
+                                  <Grid item xs={6}>
+                                    <Paper sx={{ p: 1, textAlign: 'center' }}>
+                                      <Schedule sx={{ fontSize: 20, color: 'text.secondary' }} />
+                                      <Typography variant="caption" display="block">
+                                        {t('duration')}
+                                      </Typography>
+                                      <Typography variant="body2" fontWeight="bold">
+                                        {analysis.duration ? formatDuration(analysis.duration) : 'N/A'}
+                                      </Typography>
+                                    </Paper>
+                                  </Grid>
+                                </Grid>
+        
+                                <Grid container spacing={2} sx={{ mb: 1 }}>
+                                  <Grid item xs={6}>
+                                    <Paper sx={{ p: 1, textAlign: 'center' }}>
+                                      <Star sx={{ fontSize: 20, color: getQualityColor(analysis.quality_score) }} />
+                                      <Typography variant="caption" display="block">
+                                        {t('qualityScore')}
+                                      </Typography>
+                                      <Typography variant="body2" fontWeight="bold">
+                                        {analysis.quality_score?.toFixed(1) || 'N/A'} / 10
+                                      </Typography>
+                                      <Chip 
+                                        label={getQualityLabel(analysis.quality_score || 0)} 
+                                        size="small" 
+                                        color={getQualityColor(analysis.quality_score || 0) as any}
+                                      />
+                                    </Paper>
+                                  </Grid>
+                                  
+                                  <Grid item xs={6}>
+                                    <Paper sx={{ p: 1, textAlign: 'center' }}>
+                                      <Psychology sx={{ fontSize: 20, color: 'text.secondary' }} />
+                                      <Typography variant="caption" display="block">
+                                        {t('intent')}
+                                      </Typography>
+                                      <Typography variant="body2" fontWeight="bold">
+                                        {analysis.intent_results?.predicted_intent || 'N/A'}
+                                      </Typography>
+                                    </Paper>
+                                  </Grid>
+                                </Grid>
+        
+                                <Typography variant="caption" color="text.secondary">
+                                  {t('processed')} : {new Date(analysis.processed_at).toLocaleString()}
+                                </Typography>
+                              </ListItem>
+                              {index < statusData.recent_analyses.length - 1 && <Divider />}
+                            </React.Fragment>
+                          ))}
+                        </List>
+                      )}
+                    </CardContent>
+                  </Card>
+                </Grid>
 
    
     </div>
