@@ -47,10 +47,17 @@ class IntentDetector:
                 r'\b(not working|broken|failed|failure|defective|poor quality)\b',
                 r'\b(refund|return|cancel|cancellation)\b'
             ],
+            ],
             'inquiry': [
                 r'\b(question|ask|wondering|curious|information|details|explain|clarify|help|assistance)\b',
                 r'\b(how to|how do|what is|where is|when is|why is)\b',
-                r'\b(status|update|progress|timeline)\b'
+                r'\b(status|update|progress|timeline)\b',
+                r'\b(product|service|feature|functionality|specification|availability)\b',
+                r'\b(price|cost|pricing|quote|estimate)\b',
+                r'\b(delivery|shipping|order|purchase)\b',
+                r'\b(bill|billing|charge|payment|invoice|account|balance|fee)\b',
+                r'\b(credit card|debit|transaction|subscription|plan)\b',
+                r'\b(overcharge|incorrect charge|billing error)\b'
             ],
             'feedback': [
                 r'\b(feedback|suggestion|recommend|improvement|better|enhance|feature)\b',
@@ -61,17 +68,7 @@ class IntentDetector:
                 r'\b(help|support|assist|guidance|tutorial|instructions)\b',
                 r'\b(need help|can you help|please help|assistance needed)\b',
                 r'\b(technical support|customer service|customer care)\b'
-            ],
-            'billing_inquiry': [
-                r'\b(bill|billing|charge|payment|invoice|account|balance|fee)\b',
-                r'\b(credit card|debit|transaction|subscription|plan)\b',
-                r'\b(overcharge|incorrect charge|billing error)\b'
-            ],
-            'product_inquiry': [
-                r'\b(product|service|feature|functionality|specification|availability)\b',
-                r'\b(price|cost|pricing|quote|estimate)\b',
-                r'\b(delivery|shipping|order|purchase)\b'
-            ]
+            ] 
         }
 
 

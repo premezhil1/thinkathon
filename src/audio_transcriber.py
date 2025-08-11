@@ -147,6 +147,8 @@ class AudioTranscriber:
                 # Filter out segments with empty or whitespace-only text
                 filtered_segments = [seg for seg in transcription_result.get("segments", []) if seg.get("text", "").strip()]
                 transcription_result["segments"] = filtered_segments;
+
+                print(f"filtered_segments: {filtered_segments}")
                 return transcription_result
                 
             except Exception as e:
@@ -247,7 +249,7 @@ class AudioTranscriber:
 
                 #print(f"DEBUG: Added segment {i}: {current_speaker} - '{text[:50]}...'")
 
-            #print(f"Speaker diarization completed. Total segments: {speaker_segments}")
+            print(f"Speaker diarization completed. Total segments: {speaker_segments}")
             return speaker_segments
 
         except Exception as e:

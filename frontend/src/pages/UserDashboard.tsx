@@ -77,13 +77,7 @@ interface User {
   updated_at: string;
 }
 
-interface UserStatusData {
-  user_id: string;
-  total_analyses: number;
-  audio_files: AudioFile[];
-  recent_analyses: AnalysisResult[];
-  status: string;
-}
+ 
 
  const formatFileSize = (bytes: number) => {
     const mb = bytes / (1024 * 1024);
@@ -104,14 +98,31 @@ interface UserStatusData {
   user_id: string;
   total_analyses: number;
   audio_files: AudioFile[];
-  recent_analyses: AnalysisResult[];
+  recent_analyses: Analysis[];
   status: string;
+}
+
+interface Analysis {
+  analysis: AnalysisResult;
+  sentiment: string;
+  analysis_id: string;
+  conversation_data: any;
+  intents: [{intent: string}];
+  sentiment_results: any;
+  topic_results: any;
+  quality_score: number;
+  participants: string[];
+  duration: number;
+  industry: string;
+  processed_at: string;
+  audio_file_path: string;
 }
 
 interface AnalysisResult {
   analysis_id: string;
   conversation_data: any;
-  intent_results: any;
+  sentiment: string;
+  intents: [{intent: string}];
   sentiment_results: any;
   topic_results: any;
   quality_score: number;
@@ -141,6 +152,20 @@ interface PerformanceData {
   top_intents: Array<{ top_intent: string; count: number }>;
   date_range: { from: string | null; to: string | null };
 }
+
+
+const getSentimentColor = (sentiment: string) => {
+    switch (sentiment.toLowerCase()) {
+      case 'positive':
+        return 'success';
+      case 'negative':
+        return 'error';
+      case 'neutral':
+        return 'default';
+      default:
+        return 'default';
+    }
+  };
 
 export const UserDashboard: React.FC = () => {
   const { userId } = useParams<{ userId: string }>();
@@ -236,6 +261,12 @@ export const UserDashboard: React.FC = () => {
   };
 
   const getQualityColor = (score: number) => {
+    if (score >= 8) return 'success';
+    if (score >= 6) return 'warning';
+    return 'error';
+  };
+
+  const getQualityHexColor = (score: number) => {
     if (score >= 8) return '#4caf50';
     if (score >= 6) return '#ff9800';
     return '#f44336';
@@ -305,17 +336,7 @@ export const UserDashboard: React.FC = () => {
     color: sentimentColors[sentiment as keyof typeof sentimentColors] || '#9e9e9e',
   }));
 
-  const qualityChartData = Object.entries(quality_distribution).map(([quality, count]) => ({
-    name: quality,
-    value: count,
-    color: qualityColors[quality as keyof typeof qualityColors] || '#9e9e9e',
-  }));
-
-  const industryChartData = Object.entries(industry_distribution).map(([industry, data]) => ({
-    industry,
-    calls: data.count,
-    avgQuality: data.avg_quality,
-  }));
+ 
 
   const trendChartData = performance_trend.slice(0, 14).reverse().map(item => ({
     date: new Date(item.call_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
@@ -478,34 +499,7 @@ export const UserDashboard: React.FC = () => {
             </CardContent>
           </Card>
         </Grid>
-      </Grid>
-
-      <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                {t('industryPerformance')}
-              </Typography>
-              <Box sx={{ height: 300 }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={industryChartData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="industry" />
-                    <YAxis yAxisId="left" />
-                    <YAxis yAxisId="right" orientation="right" />
-                    <RechartsTooltip />
-                    <Legend />
-                    <Bar yAxisId="left" dataKey="calls" fill="#2196f3" name="Calls" />
-                    <Bar yAxisId="right" dataKey="avgQuality" fill="#4caf50" name="Avg Quality" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </Box>
-            </CardContent>
-          </Card>
-        </Grid>
-
-
-            {/* Audio Files */}
+             {/* Audio Files */}
                 <Grid item xs={12} md={6}>
                   <Card>
                     <CardContent>
@@ -525,7 +519,7 @@ export const UserDashboard: React.FC = () => {
                                   <AudioFile color="primary" />
                                 </ListItemIcon>
                                 <ListItemText
-                                  primary={file.filename}
+                                  primary={file.filename.split("_")[1]}
                                   secondary={
                                     <div>
                                       <p className="text-caption">
@@ -573,7 +567,9 @@ export const UserDashboard: React.FC = () => {
                       ) : (
                         <List>
                           {statusData.recent_analyses.map((analysis, index) => (
+                            
                             <React.Fragment key={analysis.analysis_id}>
+                             
                               <ListItem sx={{ px: 0, flexDirection: 'column', alignItems: 'stretch' }}>
                                 <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', mb: 1 }}>
                                   <Typography variant="subtitle2">
@@ -620,16 +616,20 @@ export const UserDashboard: React.FC = () => {
                                     <Paper sx={{ p: 1, textAlign: 'center' }}>
                                       <Star sx={{ fontSize: 20, color: getQualityColor(analysis.quality_score) }} />
                                       <Typography variant="caption" display="block">
-                                        {t('qualityScore')}
+                                        Sentiment
                                       </Typography>
                                       <Typography variant="body2" fontWeight="bold">
-                                        {analysis.quality_score?.toFixed(1) || 'N/A'} / 10
+                                        
                                       </Typography>
-                                      <Chip 
-                                        label={getQualityLabel(analysis.quality_score || 0)} 
-                                        size="small" 
-                                        color={getQualityColor(analysis.quality_score || 0) as any}
-                                      />
+                                   <Chip
+  label={analysis.analysis?.sentiment}
+  size="small"
+  sx={{
+    backgroundColor: getSentimentColor(analysis.analysis?.sentiment),
+    color: "#fff",
+    textTransform: "capitalize"
+  }}
+/>
                                     </Paper>
                                   </Grid>
                                   
@@ -639,8 +639,9 @@ export const UserDashboard: React.FC = () => {
                                       <Typography variant="caption" display="block">
                                         {t('intent')}
                                       </Typography>
-                                      <Typography variant="body2" fontWeight="bold">
-                                        {analysis.intent_results?.predicted_intent || 'N/A'}
+                                      <Typography variant="body2" fontWeight="bold" sx={{  textTransform: 'capitalize' }}>
+                                         
+                                        {analysis.analysis?.intents?.[0]?.intent || 'N/A'}
                                       </Typography>
                                     </Paper>
                                   </Grid>
@@ -658,6 +659,11 @@ export const UserDashboard: React.FC = () => {
                     </CardContent>
                   </Card>
                 </Grid>
+      </Grid>
+
+
+
+       
 
    
     </div>

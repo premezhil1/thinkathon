@@ -8,6 +8,7 @@
     "navigation_users": "Users",
     "navigation_analysis": "Analysis",
     "navigation_results": "Results",
+    "savedAudioFiles": "Saved Audio Files",
     "upload_header": "Call Summary & Quality Analyzer",
     "upload_title": "Upload Audio File",
     "upload_industryUpload": "Select an industry and upload your audio file to begin analysis.",
