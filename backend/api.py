@@ -182,11 +182,11 @@ async def process_audio_file(file_path: str, analysis_id: str, industry: str = "
             await update_progress(analysis_id, "error", 0, "transcription", "Failed to diarization")
             return
 
-        await update_progress(analysis_id, "processing", 50, "analysis", "Performing NLP analysis...") 
+        await update_progress(analysis_id, "processing", 60, "analysis", "Performing NLP analysis...") 
 
         transcription_result['industry'] = industry
 
-        await update_progress(analysis_id, "processing", 60, "saving", "Analyzing Conversation...")
+        
         
         # Run CPU-intensive analysis in thread pool to avoid blocking
         loop = asyncio.get_running_loop()

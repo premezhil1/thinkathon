@@ -172,8 +172,8 @@ class IntentDetector:
             if len(text) > max_length * 4:
                 text = text[:max_length * 4]
            
-            #candidate_labels = ["complaint", "feedback", "inquiry"]
-            candidate_labels = self.industry_labels.get(industry)
+            candidate_labels = ["complaint", "feedback", "inquiry"]
+            #candidate_labels = self.industry_labels.get(industry)
             results = self.classifier(text,candidate_labels,truncation=True, max_length=512)
            
             if not isinstance(results, list):
@@ -290,20 +290,20 @@ class IntentDetector:
         
         # Analyze intent distribution per participant
         participant_intents = {}
-        for segment in dialogue:
-            speaker = segment.get('speaker', 'Unknown')
-            text = segment.get('text', '')
+        # for segment in dialogue:
+        #     speaker = segment.get('speaker', 'Unknown')
+        #     text = segment.get('text', '')
             
-            if speaker not in participant_intents:
-                participant_intents[speaker] = []
+        #     if speaker not in participant_intents:
+        #         participant_intents[speaker] = []
             
-            # Detect intents for this segment
-            if TRANSFORMERS_AVAILABLE and self.classifier:
-                segment_intents = self.detect_intent_with_transformers(text, industry)
-            else:
-                segment_intents = self.detect_intent_with_rules(text, industry)
+        #     # Detect intents for this segment
+        #     if TRANSFORMERS_AVAILABLE and self.classifier:
+        #         segment_intents = self.detect_intent_with_transformers(text, industry)
+        #     else:
+        #         segment_intents = self.detect_intent_with_rules(text, industry)
             
-            participant_intents[speaker].extend(segment_intents)
+        #     participant_intents[speaker].extend(segment_intents)
         
         return {
             'intents': merged_intents,

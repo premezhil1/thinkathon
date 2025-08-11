@@ -21,10 +21,11 @@ class TopicExtractor:
     def __init__(self):
         """Initialize topic extractor with NLP tools."""
         # Download required NLTK data
-        try:
-            nltk.data.find('tokenizers/punkt')
-        except LookupError:
-            nltk.download('punkt')
+        for resource in ["punkt", "punkt_tab"]:
+            try:
+                nltk.data.find(f"tokenizers/{resource}")
+            except (LookupError, OSError):
+                nltk.download(resource)
         
         try:
             nltk.data.find('corpora/stopwords')
@@ -309,75 +310,6 @@ class TopicExtractor:
         
         return summary
     
-    def get_topic_distribution_data(self, conversations: List[Dict]) -> Dict:
-        """Prepare topic distribution data for visualization."""
-        all_topics = {}
-        industry_breakdown = {}
-        
-        for conv in conversations:
-            industry = conv.get('industry', 'general')
-            dialogue = conv.get('dialogue', [])
-            
-            # Extract topics for this conversation
-            topics_result = self.extract_conversation_topics(dialogue, industry)
-            
-            # Aggregate topics
-            for topic, score in topics_result['topic_scores'].items():
-                if score > 0:
-                    if topic not in all_topics:
-                        all_topics[topic] = []
-                    all_topics[topic].append(score)
-                    
-                    # Industry breakdown
-                    if industry not in industry_breakdown:
-                        industry_breakdown[industry] = {}
-                    if topic not in industry_breakdown[industry]:
-                        industry_breakdown[industry][topic] = []
-                    industry_breakdown[industry][topic].append(score)
-        
-        # Calculate averages
-        topic_averages = {topic: np.mean(scores) for topic, scores in all_topics.items()}
-        
-        # Industry averages
-        industry_topic_averages = {}
-        for industry, topics in industry_breakdown.items():
-            industry_topic_averages[industry] = {
-                topic: np.mean(scores) for topic, scores in topics.items()
-            }
-        
-        return {
-            'overall_topic_distribution': topic_averages,
-            'industry_topic_breakdown': industry_topic_averages,
-            'topic_frequency': {topic: len(scores) for topic, scores in all_topics.items()}
-        }
+     
     
-    def get_topic_explanation(self, topic: str, score: float, industry: str) -> str:
-        """Generate explanation for detected topic."""
-        # Format topic name
-        formatted_topic = topic.replace('_', ' ').title()
-        
-        # Industry-specific explanations
-        explanations = {
-            'eCommerce': {
-                'order_management': "Discussion about order status, delivery, or shipping concerns",
-                'payment_billing': "Conversation involving payment methods, billing issues, or refunds",
-                'product_issues': "Topics related to product quality, defects, or returns"
-            },
-            'Telecom': {
-                'service_issues': "Discussion about network problems, service outages, or connectivity",
-                'billing_plans': "Conversation about billing, plan changes, or pricing",
-                'technical_support': "Technical troubleshooting or setup assistance"
-            },
-            'Healthcare': {
-                'appointments': "Discussion about scheduling or managing appointments",
-                'test_results': "Conversation about medical test results or reports",
-                'medication': "Topics related to prescriptions or medication management"
-            }
-        }
-        
-        industry_explanations = explanations.get(industry, {})
-        specific_explanation = industry_explanations.get(topic, f"Discussion related to {formatted_topic}")
-        
-        confidence_level = "high" if score > 0.3 else "medium" if score > 0.1 else "low"
-        
-        return f"{specific_explanation}. Detected with {confidence_level} confidence ({score:.1%} relevance)."
+    

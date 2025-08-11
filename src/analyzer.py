@@ -75,9 +75,11 @@ class CallAnalyzer:
         try:
             # Perform all analyses
             intent_results = self.intent_detector.analyze_conversation(dialogue, industry)
+            print(f"intent_results {intent_results}")
             sentiment_results = self.sentiment_analyzer.analyze_conversation(dialogue)
+            print(f"sentiment_results {sentiment_results}")
             topic_results = self.topic_extractor.extract_conversation_topics(dialogue, industry)             
-            
+            print(f"topic_results {topic_results}")
             # Generate summary  
             formatted_lines = [f"{entry['speaker']}: {entry['text']}" for entry in conversation['dialogue']]
 
@@ -112,106 +114,8 @@ class CallAnalyzer:
                 'conversation_id': conv_id,
                 'industry': industry,
                 'analysis_timestamp': datetime.now().isoformat()
-            }
-    
-    def analyze_dataset(self, conversations: List[Dict]) -> Dict:
-        """
-        Analyze multiple conversations and provide aggregate insights.
-        
-        Args:
-            conversations: List of conversation dictionaries
-            
-        Returns:
-            Aggregate analysis results
-        """
-        print(f"Analyzing dataset with {len(conversations)} conversations...")
-        
-        individual_results = []
-        aggregate_metrics = {
-            'total_conversations': len(conversations),
-            'industries': {},
-            'intent_distribution': {},
-            'sentiment_distribution': {},
-            'topic_distribution': {},
-            'quality_metrics': {
-                'average_quality': 0,
-                'high_quality_count': 0,
-                'resolution_rate': 0
-            }
-        }
-        
-        # Analyze each conversation
-        for i, conversation in enumerate(conversations):
-            print(f"Processing conversation {i+1}/{len(conversations)}...")
-            result = self.analyze_conversation(conversation)
-            individual_results.append(result)
-            
-            # Update aggregate metrics
-            self._update_aggregate_metrics(result, aggregate_metrics)
-        
-        # Calculate final aggregate statistics
-        self._finalize_aggregate_metrics(aggregate_metrics, len(conversations))
-        
-        # Generate dataset insights
-        insights = self._generate_dataset_insights(individual_results, aggregate_metrics)
-        
-        return {
-            'dataset_summary': aggregate_metrics,
-            'individual_analyses': individual_results,
-            'insights_and_trends': insights,
-            'analysis_timestamp': datetime.now().isoformat()
-        }
-    
+            } 
  
-    def _update_aggregate_metrics(self, result: Dict, aggregate_metrics: Dict):
-        """Update aggregate metrics with individual conversation result."""
-        industry = result.get('industry', 'unknown')
-        
-        # Industry distribution
-        if industry not in aggregate_metrics['industries']:
-            aggregate_metrics['industries'][industry] = 0
-        aggregate_metrics['industries'][industry] += 1
-        
-        # Intent distribution
-        intent_analysis = result.get('intent_analysis', {})
-        primary_intents = intent_analysis.get('intents', [])
-        for intent in primary_intents[:3]:  # Top 3 intents
-            if isinstance(intent, dict):
-                intent_name = intent.get('intent', '')
-            else:
-                intent_name = str(intent)
-            if intent_name not in aggregate_metrics['intent_distribution']:
-                aggregate_metrics['intent_distribution'][intent_name] = 0
-            aggregate_metrics['intent_distribution'][intent_name] += 1
-        
-        # Sentiment distribution
-        sentiment_analysis = result.get('sentiment_analysis', {})
-        overall_sentiment = sentiment_analysis.get('overall_sentiment', {}).get('label', 'neutral')
-        if overall_sentiment not in aggregate_metrics['sentiment_distribution']:
-            aggregate_metrics['sentiment_distribution'][overall_sentiment] = 0
-        aggregate_metrics['sentiment_distribution'][overall_sentiment] += 1
-        
-        # Topic distribution
-        topic_analysis = result.get('topic_analysis', {})
-        dominant_topics = topic_analysis.get('dominant_topics', [])
-        for topic, score in dominant_topics[:3]:  # Top 3 topics
-            if topic not in aggregate_metrics['topic_distribution']:
-                aggregate_metrics['topic_distribution'][topic] = 0
-            aggregate_metrics['topic_distribution'][topic] += score
-        
-        # Quality metrics
-        quality_metrics = result.get('quality_metrics', {})
-        quality_score = quality_metrics.get('overall_score', 0)
-        aggregate_metrics['quality_metrics']['average_quality'] += quality_score
-        
-        if quality_score >= 75:
-            aggregate_metrics['quality_metrics']['high_quality_count'] += 1
-        
-        resolution = sentiment_analysis.get('quality_metrics', {}).get('resolution_indicator', 'unresolved')
-        if resolution in ['resolved', 'partially_resolved']:
-            aggregate_metrics['quality_metrics']['resolution_rate'] += 1
-
-    
 
     def clean_conversation(self, text):
         """Clean and preprocess conversation text"""
